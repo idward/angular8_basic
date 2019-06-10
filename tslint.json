@@ -44,6 +44,7 @@
       }
     ],
     "no-consecutive-blank-lines": false,
+    "no-angle-bracket-type-assertion":false,
     "no-console": [
       true,
       "debug",
@@ -54,11 +55,11 @@
     ],
     "no-empty": false,
     "no-inferrable-types": [
-      true,
+      false,
       "ignore-params"
     ],
     "no-non-null-assertion": true,
-    "no-redundant-jsdoc": true,
+    "no-redundant-jsdoc": false,
     "no-switch-case-fall-through": true,
     "no-use-before-declare": true,
     "no-var-requires": false,
@@ -73,13 +74,13 @@
       "single"
     ],
     "trailing-comma": false,
-    "no-conflicting-lifecycle": true,
+    "no-conflicting-lifecycle": false,
     "no-host-metadata-property": true,
-    "no-input-rename": true,
+    "no-input-rename": false,
     "no-inputs-metadata-property": true,
     "no-output-native": true,
     "no-output-on-prefix": true,
-    "no-output-rename": true,
+    "no-output-rename": false,
     "no-outputs-metadata-property": true,
     "template-banana-in-box": true,
     "template-no-negated-async": true,
