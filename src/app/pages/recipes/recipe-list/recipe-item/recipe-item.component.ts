@@ -17,6 +17,7 @@ import {
   EventEmitter
 } from '@angular/core';
 import { Recipe } from '../../../../models/recipe.model';
+import { RecipeService } from 'src/app/services/recipe.service';
 
 @Component({
   selector: 'app-recipe-item',
@@ -37,15 +38,11 @@ export class RecipeItemComponent implements OnInit {
   // @ContentChild 和ng-content配合使用 用于指定一个组件,
   // 在AfterContentInit中被实现
   @ViewChild('heading', { static: true }) h: ElementRef;
-  // 子组件向父组件传递数据
-  @Output('recipeSelected')
-  recipeSelectedEvt: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor() {
-  }
+  constructor(private recipeService: RecipeService) {}
 
-  selectRecipe(): void {
-    this.recipeSelectedEvt.emit(true);
+  selectRecipe(recipe: Recipe): void {
+    this.recipeService.recipeEvt.emit(recipe);
   }
 
   // ngOnChanges(changes: SimpleChanges): void {
@@ -53,8 +50,7 @@ export class RecipeItemComponent implements OnInit {
   //   console.log(changes);
   // }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   // ngDoCheck(): void {
   //   console.log('do check');

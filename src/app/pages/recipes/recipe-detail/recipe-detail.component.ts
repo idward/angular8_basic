@@ -1,33 +1,24 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  AfterContentChecked,
-  OnChanges,
-  SimpleChanges
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Recipe } from '../../../models/recipe.model';
+import { RecipeService } from 'src/app/services/recipe.service';
 
 @Component({
   selector: 'app-recipe-detail',
   templateUrl: './recipe-detail.component.html',
   styleUrls: ['./recipe-detail.component.css']
 })
-export class RecipeDetailComponent
-  implements OnInit, OnChanges, AfterContentChecked {
-  // 父组件向子组件传递数据
-  @Input() recipe: Recipe;
+export class RecipeDetailComponent implements OnInit {
+  recipe: Recipe;
 
-  constructor() {}
+  constructor(private recipeService: RecipeService) {}
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
+  ngOnInit() {
+    this.recipeService.recipeEvt.subscribe(recipe => {
+      this.recipe = recipe;
+    });
   }
 
-  ngAfterContentChecked(): void {
-    console.log('after content checked');
-    console.log(this.recipe);
+  addIngredients(): void {
+    this.recipeService.addIngredientsToShoppingList(this.recipe.ingredients);
   }
-
-  ngOnInit() {}
 }

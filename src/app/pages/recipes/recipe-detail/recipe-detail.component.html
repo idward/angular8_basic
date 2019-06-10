@@ -1,34 +1,55 @@
-<div class="row">
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="width:60%">
-    <img [src]="recipe.imagePath" alt="" class="img-responsive" />
+<div class="row" *ngIf="recipe; else noRecipe">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="width:60%">
+      <img [src]="recipe.imagePath" alt="" class="img-responsive" />
+    </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <h1>{{ recipe.name }}</h1>
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <h1>{{ recipe.name }}</h1>
+    </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <div class="btn-group" appDropdown>
-      <button type="button" class="btn btn-primary dropdown-toggle">
-        Manage Recipe <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu">
-        <li><a href="#">Add ingredients to shopping list</a></li>
-        <li><a href="#">Edit Recipe</a></li>
-        <li><a href="#">Delete Recipe</a></li>
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="btn-group" appDropdown>
+        <button type="button" class="btn btn-primary dropdown-toggle">
+          Manage Recipe <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a
+              href="javascript:void(0)"
+              style="cursor: pointer"
+              (click)="addIngredients()"
+              >Add ingredients to shopping list</a
+            >
+          </li>
+          <li><a href="#">Edit Recipe</a></li>
+          <li><a href="#">Delete Recipe</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      {{ recipe.description }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <ul class="list-group">
+        <li
+          *ngFor="let ingredient of recipe.ingredients"
+          class="list-group-item ingredients"
+        >
+          <span>{{ ingredient.name }}</span>
+          <span class="badge">{{ ingredient.amount }}</span>
+        </li>
       </ul>
     </div>
   </div>
 </div>
-<div class="row">
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    {{ recipe.description }}
-  </div>
-</div>
-<div class="row">
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    Ingredients
-  </div>
-</div>
+
+<ng-template #noRecipe>
+  <div>There's no recipe selected</div>
+</ng-template>
