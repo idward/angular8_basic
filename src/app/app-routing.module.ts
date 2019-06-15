@@ -12,6 +12,11 @@ import { ShoppingListComponent } from './pages/shopping-list/shopping-list.compo
 import { ShoppingEditComponent } from './pages/shopping-list/shopping-edit/shopping-edit.component';
 import { ErrorPageComponent } from './errors/error-page/error-page.component';
 
+import { BasicHighlightDirective } from './directives/basic-highlight.directive';
+import { BetterHighlightDirective } from './directives/better-highlight.directive';
+import { UnlessDirective } from './directives/unless.directive';
+import { DropdownDirective } from './directives/dropdown.directive';
+
 const routes: Routes = [
   { path: '', redirectTo: 'recipes', pathMatch: 'full' },
   {
@@ -43,9 +48,13 @@ const routes: Routes = [
     RecipeItemComponent,
     ShoppingListComponent,
     ShoppingEditComponent,
-    ErrorPageComponent
+    ErrorPageComponent,
+    BasicHighlightDirective,
+    BetterHighlightDirective,
+    UnlessDirective,
+    DropdownDirective
   ],
   imports: [CommonModule, RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule, DropdownDirective]
 })
 export class AppRoutingModule {}
