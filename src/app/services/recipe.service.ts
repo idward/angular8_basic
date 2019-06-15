@@ -13,6 +13,12 @@ export class RecipeService {
       'This is my recipe 1',
       'https://cdn.pixabay.com/photo/2016/06/15/19/09/food-1459693_1280.jpg',
       [new Ingredient('Milk', 10), new Ingredient('Bread', 15)]
+    ),
+    new Recipe(
+      'Recipe 2',
+      'This is my recipe 2',
+      'https://cdn.pixabay.com/photo/2016/06/15/19/09/food-1459693_1280.jpg',
+      [new Ingredient('Sugar', 15), new Ingredient('Banana', 5)]
     )
   ];
   recipeEvt: EventEmitter<Recipe> = new EventEmitter<Recipe>();

@@ -1,11 +1,11 @@
 <div class="row">
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <a href="javascript:void(0)" class="list-group-item clearfix" (click)="selectRecipe(recipe)">
+    <a class="list-group-item clearfix" [routerLink]="[recipe.id]" routerLinkActive="active">
       <div class="pull-left">
         <h4 class="list-group-item-heading" #heading>{{ recipe.name }}</h4>
         <p class="list-group-item-text">{{ recipe.description }}</p>
       </div>
-      <div class="pull-right" style="width:30%">
+      <div class="pull-right" style="width:20%">
         <img [src]="recipe.imagePath" alt="" class="img-responsive" />
       </div>
     </a>
