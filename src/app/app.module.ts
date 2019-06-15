@@ -10,7 +10,7 @@ import { BasicHighlightDirective } from './directives/basic-highlight.directive'
 import { BetterHighlightDirective } from './directives/better-highlight.directive';
 import { UnlessDirective } from './directives/unless.directive';
 import { DropdownDirective } from './directives/dropdown.directive';
-import { RecipeStartComponent } from './pages/recipes/recipe-start/recipe-start.component';
+
 
 @NgModule({
   declarations: [
@@ -19,8 +19,7 @@ import { RecipeStartComponent } from './pages/recipes/recipe-start/recipe-start.
     BasicHighlightDirective,
     BetterHighlightDirective,
     UnlessDirective,
-    DropdownDirective,
-    RecipeStartComponent
+    DropdownDirective
   ],
   imports: [BrowserModule, FormsModule, AppRoutingModule],
   providers: [],

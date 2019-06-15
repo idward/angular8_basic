@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { Recipe } from '../../../models/recipe.model';
 import { RecipeService } from 'src/app/services/recipe.service';
@@ -14,12 +14,20 @@ export class RecipeDetailComponent implements OnInit {
 
   constructor(
     private recipeService: RecipeService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       this.recipe = this.recipeService.getRecipe(params.id);
+
+      if (!this.recipe) {
+        // debugger;
+        const route = this.router.config.find(r => r.path === 'error');
+        route.data.message = 'Recipe you choosed is not existed';
+        this.router.navigate(['/error']);
+      }
     });
   }
 

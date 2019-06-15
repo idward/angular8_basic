@@ -53,6 +53,7 @@
       "timeEnd",
       "trace"
     ],
+    "no-debugger": false,
     "no-empty": false,
     "no-inferrable-types": [
       false,
