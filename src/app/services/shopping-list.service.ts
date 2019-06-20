@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Ingredient } from '../models/ingredient.model';
 import { Subject } from 'rxjs';
+
+import { Ingredient } from '../models/ingredient.model';
+import { EditedIngredient } from '../models/common.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +13,7 @@ export class ShoppingListService {
     new Ingredient('Tomatoes', 10)
   ];
   ingredientEmitter: Subject<Ingredient[]> = new Subject<Ingredient[]>();
+  startEditEmitter: Subject<EditedIngredient> = new Subject<EditedIngredient>();
 
   constructor() {}
 
@@ -26,5 +29,15 @@ export class ShoppingListService {
 
   getIngredients(): Ingredient[] {
     return this.ingredients;
+  }
+
+  editIngredient(editedElement: EditedIngredient): void {
+    this.ingredients = this.ingredients.map((ingredient, index) => {
+      if (index === editedElement.index) {
+        return editedElement.editedIngredient;
+      }
+      return ingredient;
+    });
+    // this.ingredientEmitter.next(this.ingredients);
   }
 }
