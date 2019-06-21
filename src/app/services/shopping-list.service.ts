@@ -32,12 +32,23 @@ export class ShoppingListService {
   }
 
   editIngredient(editedElement: EditedIngredient): void {
-    this.ingredients = this.ingredients.map((ingredient, index) => {
-      if (index === editedElement.index) {
-        return editedElement.editedIngredient;
+    this.ingredients = this.ingredients.map(
+      (ingredient: Ingredient, index: number) => {
+        if (index === editedElement.index) {
+          return editedElement.editedIngredient;
+        }
+        return ingredient;
       }
-      return ingredient;
-    });
+    );
     // this.ingredientEmitter.next(this.ingredients);
+  }
+
+  removeIngredient(removedElement: EditedIngredient): void {
+    this.ingredients = this.ingredients.filter(
+      (ingredient: Ingredient, index: number) => {
+        return index !== removedElement.index;
+      }
+    );
+    this.ingredientEmitter.next(this.ingredients);
   }
 }
