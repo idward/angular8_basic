@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { RecipesComponent } from './pages/recipes/recipes.component';
@@ -55,7 +55,12 @@ const routes: Routes = [
     UnlessDirective,
     DropdownDirective
   ],
-  imports: [CommonModule, FormsModule, RouterModule.forRoot(routes)],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule.forRoot(routes)
+  ],
   exports: [RouterModule, DropdownDirective]
 })
 export class AppRoutingModule {}
