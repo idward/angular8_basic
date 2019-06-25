@@ -60,6 +60,11 @@ export class RecipeService {
     return this.recipes.find(recipe => recipe.id === id);
   }
 
+  setRecipes(recipes: Recipe[]): void {
+    this.recipes = recipes;
+    this.recipeChanged.next(this.recipes);
+  }
+
   addIngredientsToShoppingList(ingredients: Ingredient[]): void {
     this.shoppingListService.integrateIngredients(ingredients);
   }

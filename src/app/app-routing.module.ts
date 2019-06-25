@@ -17,6 +17,7 @@ import { BasicHighlightDirective } from './directives/basic-highlight.directive'
 import { BetterHighlightDirective } from './directives/better-highlight.directive';
 import { UnlessDirective } from './directives/unless.directive';
 import { DropdownDirective } from './directives/dropdown.directive';
+import { RecipePipe } from './pipes/recipe.pipe';
 
 const routes: Routes = [
   { path: '', redirectTo: 'recipes', pathMatch: 'full' },
@@ -53,7 +54,8 @@ const routes: Routes = [
     BasicHighlightDirective,
     BetterHighlightDirective,
     UnlessDirective,
-    DropdownDirective
+    DropdownDirective,
+    RecipePipe
   ],
   imports: [
     CommonModule,
