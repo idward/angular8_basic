@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
+import { AuthComponent } from './pages/auth/auth.component';
 import { RecipesComponent } from './pages/recipes/recipes.component';
 import { RecipeStartComponent } from './pages/recipes/recipe-start/recipe-start.component';
 import { RecipeListComponent } from './pages/recipes/recipe-list/recipe-list.component';
@@ -32,6 +33,7 @@ const routes: Routes = [
     ]
   },
   { path: 'shopping-list', component: ShoppingListComponent },
+  { path: 'auth', component: AuthComponent },
   {
     path: 'error',
     component: ErrorPageComponent,
@@ -42,6 +44,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
+    AuthComponent,
     RecipesComponent,
     RecipeStartComponent,
     RecipeListComponent,

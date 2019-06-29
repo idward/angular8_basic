@@ -9,20 +9,21 @@ import { ShoppingListService } from './shopping-list.service';
   providedIn: 'root'
 })
 export class RecipeService {
-  recipes: Recipe[] = [
-    new Recipe(
-      'Recipe 1',
-      'This is my recipe 1',
-      'https://cdn.pixabay.com/photo/2016/06/15/19/09/food-1459693_1280.jpg',
-      [new Ingredient('Milk', 10), new Ingredient('Bread', 15)]
-    ),
-    new Recipe(
-      'Recipe 2',
-      'This is my recipe 2',
-      'https://cdn.pixabay.com/photo/2016/06/15/19/09/food-1459693_1280.jpg',
-      [new Ingredient('Sugar', 15), new Ingredient('Banana', 5)]
-    )
-  ];
+  // recipes: Recipe[] = [
+  //   new Recipe(
+  //     'Recipe 1',
+  //     'This is my recipe 1',
+  //     'https://cdn.pixabay.com/photo/2016/06/15/19/09/food-1459693_1280.jpg',
+  //     [new Ingredient('Milk', 10), new Ingredient('Bread', 15)]
+  //   ),
+  //   new Recipe(
+  //     'Recipe 2',
+  //     'This is my recipe 2',
+  //     'https://cdn.pixabay.com/photo/2016/06/15/19/09/food-1459693_1280.jpg',
+  //     [new Ingredient('Sugar', 15), new Ingredient('Banana', 5)]
+  //   )
+  // ];
+  recipes: Recipe[] = [];
   recipeEvt: EventEmitter<Recipe> = new EventEmitter<Recipe>();
   recipeChanged: Subject<Recipe[]> = new Subject<Recipe[]>();
 

@@ -1,8 +1,16 @@
 import { Ingredient } from './ingredient.model';
 
-interface EditedIngredient {
+export interface EditedIngredient {
   index: number;
   editedIngredient: Ingredient;
 }
 
-export { EditedIngredient };
+export interface AuthResponseData {
+  kind: string;
+  idToken: string;
+  email: string;
+  refreshToken: string;
+  expiresIn: string;
+  localId: string;
+  registered?: boolean;
+}
