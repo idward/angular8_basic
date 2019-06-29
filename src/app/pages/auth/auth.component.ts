@@ -1,6 +1,7 @@
-import { Observable } from 'rxjs';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 import { AuthService } from './../../services/auth.service';
 
@@ -14,7 +15,7 @@ export class AuthComponent implements OnInit {
   @ViewChild('f', { static: true }) authForm: NgForm;
   errorMessage: string;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {}
 
@@ -45,6 +46,7 @@ export class AuthComponent implements OnInit {
       data => {
         console.log(data);
         this.errorMessage = null;
+        this.router.navigate(['/recipes']);
       },
       error => {
         console.log(error);
