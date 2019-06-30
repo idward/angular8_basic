@@ -31,6 +31,9 @@ export class AuthGuardService implements CanActivate {
       map((user: User) => {
         console.log(user);
         if (!!user === false) {
+          if (route.routeConfig.path === 'auth') {
+            return true;
+          }
           return this.router.createUrlTree(['/auth']);
         } else {
           if (route.routeConfig.path === 'auth') {

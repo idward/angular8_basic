@@ -3,6 +3,7 @@
     <div class="alert alert-success" *ngIf="errorMessage">
       {{ errorMessage }}
     </div>
+    <!-- <app-alert [message]="errorMessage" *ngIf="errorMessage"></app-alert> -->
     <form (ngSubmit)="onSubmit()" #f="ngForm">
       <div class="form-group">
         <label for="email">E-mail</label>

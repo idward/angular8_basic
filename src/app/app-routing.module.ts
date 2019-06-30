@@ -13,6 +13,7 @@ import { RecipeItemComponent } from './pages/recipes/recipe-list/recipe-item/rec
 import { ShoppingListComponent } from './pages/shopping-list/shopping-list.component';
 import { ShoppingEditComponent } from './pages/shopping-list/shopping-edit/shopping-edit.component';
 import { ErrorPageComponent } from './pages/errors/error-page/error-page.component';
+// import { AlertComponent } from './components/alert/alert.component';
 
 import { BasicHighlightDirective } from './directives/basic-highlight.directive';
 import { BetterHighlightDirective } from './directives/better-highlight.directive';
@@ -57,6 +58,7 @@ const routes: Routes = [
     ShoppingListComponent,
     ShoppingEditComponent,
     ErrorPageComponent,
+    // AlertComponent,
     BasicHighlightDirective,
     BetterHighlightDirective,
     UnlessDirective,
