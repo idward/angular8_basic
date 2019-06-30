@@ -13,12 +13,13 @@ import { RecipeItemComponent } from './pages/recipes/recipe-list/recipe-item/rec
 import { ShoppingListComponent } from './pages/shopping-list/shopping-list.component';
 import { ShoppingEditComponent } from './pages/shopping-list/shopping-edit/shopping-edit.component';
 import { ErrorPageComponent } from './pages/errors/error-page/error-page.component';
-// import { AlertComponent } from './components/alert/alert.component';
+import { AlertComponent } from './components/alert/alert.component';
 
 import { BasicHighlightDirective } from './directives/basic-highlight.directive';
 import { BetterHighlightDirective } from './directives/better-highlight.directive';
 import { UnlessDirective } from './directives/unless.directive';
 import { DropdownDirective } from './directives/dropdown.directive';
+import { PlaceholderDirective } from './directives/placeholder.directive';
 import { RecipePipe } from './pipes/recipe.pipe';
 
 import { AuthGuardService } from './guards/auth-guard.service';
@@ -58,11 +59,12 @@ const routes: Routes = [
     ShoppingListComponent,
     ShoppingEditComponent,
     ErrorPageComponent,
-    // AlertComponent,
+    AlertComponent,
     BasicHighlightDirective,
     BetterHighlightDirective,
     UnlessDirective,
     DropdownDirective,
+    PlaceholderDirective,
     RecipePipe
   ],
   imports: [
@@ -71,6 +73,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     RouterModule.forRoot(routes)
   ],
-  exports: [RouterModule, DropdownDirective]
+  exports: [RouterModule, DropdownDirective, PlaceholderDirective],
+  entryComponents: [AlertComponent]
 })
 export class AppRoutingModule {}

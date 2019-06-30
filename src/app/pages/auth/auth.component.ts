@@ -1,9 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ComponentFactoryResolver
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { AuthService } from './../../services/auth.service';
+import { AlertComponent } from '../../components/alert/alert.component';
+import { PlaceholderDirective } from './../../directives/placeholder.directive';
 
 @Component({
   selector: 'app-auth',
@@ -12,10 +19,17 @@ import { AuthService } from './../../services/auth.service';
 })
 export class AuthComponent implements OnInit {
   isLoginMode: boolean = false;
-  @ViewChild('f', { static: true }) authForm: NgForm;
   errorMessage: string;
+  @ViewChild('f', { static: true }) authForm: NgForm;
+  @ViewChild(PlaceholderDirective, { static: true })
+  domContainer: PlaceholderDirective;
+  alertCmpSubs: Subscription;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private componentFactoryResolver: ComponentFactoryResolver
+  ) {}
 
   ngOnInit() {}
 
@@ -51,9 +65,28 @@ export class AuthComponent implements OnInit {
       error => {
         console.log(error);
         this.errorMessage = error;
+        this.showAlertDialog(error);
       }
     );
     // reset the form value
     this.authForm.reset();
+  }
+
+  showAlertDialog(message: string): void {
+    // create component factory
+    const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(
+      AlertComponent
+    );
+    const alertViewContainer = this.domContainer.viewContainerRef;
+    alertViewContainer.clear();
+    // view container to append child component
+    const alertCmp = alertViewContainer.createComponent(alertCmpFactory);
+    // get property in component
+    alertCmp.instance.message = message;
+    // subscribe close event
+    this.alertCmpSubs = alertCmp.instance.closeEvt.subscribe(() => {
+      alertViewContainer.clear();
+      this.alertCmpSubs.unsubscribe();
+    });
   }
 }
