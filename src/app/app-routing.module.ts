@@ -12,7 +12,7 @@ import { RecipeDetailComponent } from './pages/recipes/recipe-detail/recipe-deta
 import { RecipeItemComponent } from './pages/recipes/recipe-list/recipe-item/recipe-item.component';
 import { ShoppingListComponent } from './pages/shopping-list/shopping-list.component';
 import { ShoppingEditComponent } from './pages/shopping-list/shopping-edit/shopping-edit.component';
-import { ErrorPageComponent } from './errors/error-page/error-page.component';
+import { ErrorPageComponent } from './pages/errors/error-page/error-page.component';
 
 import { BasicHighlightDirective } from './directives/basic-highlight.directive';
 import { BetterHighlightDirective } from './directives/better-highlight.directive';
@@ -20,11 +20,14 @@ import { UnlessDirective } from './directives/unless.directive';
 import { DropdownDirective } from './directives/dropdown.directive';
 import { RecipePipe } from './pipes/recipe.pipe';
 
+import { AuthGuardService } from './guards/auth-guard.service';
+
 const routes: Routes = [
   { path: '', redirectTo: 'recipes', pathMatch: 'full' },
   {
     path: 'recipes',
     component: RecipesComponent,
+    canActivate: [AuthGuardService],
     children: [
       { path: '', component: RecipeStartComponent },
       { path: 'new', component: RecipeEditComponent },
@@ -33,7 +36,7 @@ const routes: Routes = [
     ]
   },
   { path: 'shopping-list', component: ShoppingListComponent },
-  { path: 'auth', component: AuthComponent },
+  { path: 'auth', component: AuthComponent, canActivate: [AuthGuardService] },
   {
     path: 'error',
     component: ErrorPageComponent,
