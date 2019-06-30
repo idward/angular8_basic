@@ -3,7 +3,6 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { Recipe } from '../../../models/recipe.model';
 import { RecipeService } from '../../../services/recipe.service';
-import { ShoppingListService } from './../../../services/shopping-list.service';
 
 @Component({
   selector: 'app-recipe-detail',
