@@ -1,0 +1,82 @@
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <!-- <div class="alert alert-success" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div> -->
+    <!-- <app-alert [message]="errorMessage" *ngIf="errorMessage"></app-alert> -->
+    <form (ngSubmit)="onSubmit()" #f="ngForm">
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          name="email"
+          ngModel
+          required
+          email
+        />
+        <span
+          class="help-block"
+          *ngIf="
+            authForm.controls.email?.touched &&
+            authForm.controls.email?.errors?.required
+          "
+          >email is required</span
+        >
+        <span
+          class="help-block"
+          *ngIf="
+            authForm.controls.email?.touched &&
+            authForm.controls.email?.errors?.email
+          "
+          >email is invalid</span
+        >
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          class="form-control"
+          name="password"
+          ngModel
+          required
+          minlength="6"
+        />
+        <span
+          class="help-block"
+          *ngIf="
+            authForm.controls.password?.touched &&
+            authForm.controls.password?.errors?.required
+          "
+          >Password is required</span
+        >
+        <span
+          class="help-block"
+          *ngIf="
+            authForm.controls.password?.touched &&
+            authForm.controls.password?.errors?.minlength
+          "
+          >Password must be less than 6 digits</span
+        >
+      </div>
+      <div>
+        <button
+          class="btn btn-primary"
+          type="submit"
+          [disabled]="authForm.invalid"
+        >
+          {{ isLoginMode ? 'Login' : 'Sign up' }}
+        </button>
+        |
+        <button class="btn btn-primary" (click)="onSwitchMode()" type="button">
+          Switch to {{ isLoginMode ? 'Sign up' : 'Login' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<ng-template appPlaceholder></ng-template>
+

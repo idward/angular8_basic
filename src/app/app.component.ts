@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -6,14 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  name = 'my-first-app';
-  selectedType: string = 'recipe';
+  constructor(private authService: AuthService) {}
 
-  constructor() {}
-
-  ngOnInit(): void {}
-
-  onNavigate(feature: string) {
-    this.selectedType = feature;
+  ngOnInit(): void {
+    this.authService.initialAuthUserStatus();
   }
 }

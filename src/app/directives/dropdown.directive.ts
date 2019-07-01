@@ -19,6 +19,11 @@ export class DropdownDirective {
       : false;
   }
 
+  // @HostListener('click')
+  // openDropdownMenu() {
+  //   this.isOpen = true;
+  // }
+
   // @HostListener('mouseleave')
   // closeDropdownMenu() {
   //   if (this.isOpen) {

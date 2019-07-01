@@ -1,12 +1,19 @@
 <div>
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-      <button class="btn btn-primary">New Recipe</button>
+      <button class="btn btn-primary" (click)="onRecipeNew()">
+        New Recipe
+      </button>
     </div>
   </div>
   <hr />
+  <div class="row" style="margin-bottom: 10px;">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <input type="text" [(ngModel)]="filterKey" />
+    </div>
+  </div>
   <app-recipe-item
-    *ngFor="let recipe of recipes"
+    *ngFor="let recipe of recipes | filterRecipes: filterKey:filterName"
     [recipeItem]="recipe"
   ></app-recipe-item>
 </div>
