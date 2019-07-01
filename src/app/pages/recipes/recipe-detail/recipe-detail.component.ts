@@ -19,7 +19,6 @@ export class RecipeDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    debugger;
     this.route.data.subscribe((value: Data) => {
       this.recipe = value.recipe;
 
@@ -33,7 +32,6 @@ export class RecipeDetailComponent implements OnInit {
     //   this.recipe = this.recipeService.getRecipe(params.id);
 
     //   if (!this.recipe) {
-    //     // debugger;
     //     const route = this.router.config.find(r => r.path === 'error');
     //     route.data.message = 'Recipe you choosed is not existed';
     //     this.router.navigate(['/error']);
