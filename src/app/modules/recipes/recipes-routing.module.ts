@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AuthGuardService } from 'src/app/guards/auth-guard.service';
+import { AuthGuardService } from 'src/app/guards/auth.guard';
+import { CanDeactivateGuard } from 'src/app/guards/can-deactive.guard';
 import { RecipeResolverService } from 'src/app/services/recipe-resolver.service';
 
 import { RecipesComponent } from 'src/app/pages/recipes/recipes.component';
@@ -26,7 +27,8 @@ const routes: Routes = [
       {
         path: ':id/edit',
         component: RecipeEditComponent,
-        resolve: { recipe: RecipeResolverService }
+        resolve: { recipe: RecipeResolverService },
+        canDeactivate: [CanDeactivateGuard]
       }
     ]
   }

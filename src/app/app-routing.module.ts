@@ -14,7 +14,7 @@ import { BetterHighlightDirective } from './directives/better-highlight.directiv
 import { UnlessDirective } from './directives/unless.directive';
 import { PlaceholderDirective } from './directives/placeholder.directive';
 
-import { AuthGuardService } from './guards/auth-guard.service';
+import { AuthGuardService } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'recipes', pathMatch: 'full' },
