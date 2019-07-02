@@ -1,5 +1,5 @@
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router, Data } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 
@@ -13,10 +13,11 @@ import { RecipeService } from 'src/app/services/recipe.service';
   templateUrl: './recipe-edit.component.html',
   styleUrls: ['./recipe-edit.component.css']
 })
-export class RecipeEditComponent implements OnInit {
+export class RecipeEditComponent implements OnInit, AfterViewInit {
   recipeForm: FormGroup;
   recipe: Recipe;
   isChanged: boolean = false;
+  isSaveMode: boolean = false;
 
   constructor(
     private recipeService: RecipeService,
@@ -54,6 +55,12 @@ export class RecipeEditComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit(): void {
+    this.recipeForm.valueChanges.subscribe((v: any) => {
+      this.isChanged = true;
+    });
+  }
+
   setIngredientsArray(ings: Ingredient[]): void {
     ings.forEach((ing, index) => {
       (<FormArray>this.recipeForm.get('ingredients')).push(
@@ -72,6 +79,7 @@ export class RecipeEditComponent implements OnInit {
     console.log(this.recipeForm);
     if (this.recipe) {
       // update
+      this.isSaveMode = true;
       this.recipeService.updateRecipe(this.recipe.id, this.recipeForm.value);
       this.router.navigate(['../'], { relativeTo: this.route });
     } else {
@@ -114,15 +122,9 @@ export class RecipeEditComponent implements OnInit {
   }
 
   canDeactive(): Observable<boolean> | Promise<boolean> | boolean {
-    // const formValue = this.recipeForm.value;
-    // Object.keys(formValue).forEach(key => {
-    //   if (formValue[key].trim() !== '') {
-    //     return this.recipeService.confirm(
-    //       'Discard changes before your leaving?'
-    //     );
-    //   }
-    // });
-    // 结合生命周期去判断是否改变
+    if (this.isChanged && !this.isSaveMode) {
+      return this.recipeService.confirm('Discard changes before your leaving?');
+    }
     return true;
   }
 }
