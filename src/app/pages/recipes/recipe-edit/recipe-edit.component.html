@@ -3,8 +3,16 @@
     <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
       <div class="row" style="margin-bottom:10px">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <button type="submit" class="btn btn-success" [disabled]="!recipeForm.valid">Save</button>
-          <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+          <button
+            type="submit"
+            class="btn btn-success"
+            [disabled]="!recipeForm.valid"
+          >
+            Save
+          </button>
+          <button type="button" class="btn btn-danger" (click)="onCancel()">
+            Cancel
+          </button>
         </div>
       </div>
       <hr />
@@ -60,7 +68,11 @@
         >
           <div
             class="row"
-            *ngFor="let ingredient of ingredients.controls; let i = index"
+            *ngFor="
+              let ingredient of ingredients.controls;
+              let i = index;
+              trackBy: trackByFn
+            "
             [formGroupName]="i"
             style="margin-top: 5px"
           >
@@ -75,7 +87,9 @@
               />
             </div>
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-              <button class="btn btn-danger" (click)="onDeleteIngredient(i)">X</button>
+              <button class="btn btn-danger" (click)="onDeleteIngredient(i)">
+                X
+              </button>
             </div>
           </div>
         </div>

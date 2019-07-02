@@ -35,6 +35,10 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     this.router.navigate(['new'], { relativeTo: this.route });
   }
 
+  trackByFn(index: number, item: Recipe): string {
+    return item.id;
+  }
+
   ngOnDestroy(): void {
     this.recipeSubcription.unsubscribe();
   }

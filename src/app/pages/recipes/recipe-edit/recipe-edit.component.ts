@@ -127,4 +127,8 @@ export class RecipeEditComponent implements OnInit, AfterViewInit {
     }
     return true;
   }
+
+  trackByFn(index: number, item: Ingredient): string {
+    return item.name + index;
+  }
 }

@@ -30,6 +30,10 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     });
   }
 
+  trackByFn(index: number, item: Ingredient): string {
+    return item.name + index;
+  }
+
   ngOnDestroy(): void {
     this.ingredientSub.unsubscribe();
   }

@@ -6,7 +6,7 @@
       <li
         class="list-group-item"
         style="cursor:pointer"
-        *ngFor="let ingredient of ingredients; let i = index"
+        *ngFor="let ingredient of ingredients; let i = index; trackBy: trackByFn"
         (click)="onEdit(i)"
       >
         {{ ingredient.name }} ({{ ingredient.amount }})

@@ -3,6 +3,7 @@ import { ActivatedRoute, Params, Router, Data } from '@angular/router';
 
 import { Recipe } from '../../../models/recipe.model';
 import { RecipeService } from '../../../services/recipe.service';
+import { Ingredient } from 'src/app/models/ingredient.model';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -52,5 +53,9 @@ export class RecipeDetailComponent implements OnInit {
       this.recipeService.deleteRecipe(this.recipe.id);
       this.router.navigate(['../'], { relativeTo: this.route });
     }
+  }
+
+  trackByFn(index: number, item: Ingredient): string {
+    return item.name + index;
   }
 }
