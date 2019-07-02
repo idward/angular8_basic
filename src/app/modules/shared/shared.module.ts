@@ -32,6 +32,7 @@ import { DropdownDirective } from 'src/app/directives/dropdown.directive';
     RouterModule,
     FormsModule,
     ReactiveFormsModule
-  ]
+  ],
+  entryComponents: [AlertComponent]
 })
 export class SharedModule {}

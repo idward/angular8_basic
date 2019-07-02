@@ -12,6 +12,7 @@ import { User } from '../models/user.model';
 })
 export class AuthService {
   userEmitter: BehaviorSubject<User> = new BehaviorSubject<User>(null);
+  userDestroy: Subject<any> = new Subject<any>();
   logoutTimerId: any;
 
   constructor(private http: HttpClient) {}

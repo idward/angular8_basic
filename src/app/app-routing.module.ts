@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AuthComponent } from './pages/auth/auth.component';
 import { ErrorPageComponent } from './pages/errors/error-page/error-page.component';
-
-import { AuthGuardService } from './guards/auth.guard';
-import { SharedModule } from './modules/shared/shared.module';
 
 const routes: Routes = [
   { path: '', redirectTo: 'recipes', pathMatch: 'full' },
-  { path: 'auth', component: AuthComponent, canActivate: [AuthGuardService] },
+  {
+    path: 'recipes',
+    loadChildren: './modules/recipes/recipes.module#RecipesModule'
+  },
   {
     path: 'error',
     component: ErrorPageComponent,
@@ -19,14 +18,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    AuthComponent,
-    ErrorPageComponent
-  ],
-  imports: [
-    RouterModule.forRoot(routes),
-    SharedModule
-  ],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

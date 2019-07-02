@@ -2,7 +2,8 @@ import {
   Component,
   OnInit,
   ViewChild,
-  ComponentFactoryResolver
+  ComponentFactoryResolver,
+  OnDestroy
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
@@ -17,7 +18,7 @@ import { PlaceholderDirective } from './../../directives/placeholder.directive';
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css']
 })
-export class AuthComponent implements OnInit {
+export class AuthComponent implements OnInit, OnDestroy {
   isLoginMode: boolean = false;
   errorMessage: string;
   @ViewChild('f', { static: true }) authForm: NgForm;
@@ -88,5 +89,10 @@ export class AuthComponent implements OnInit {
       alertViewContainer.clear();
       this.alertCmpSubs.unsubscribe();
     });
+  }
+
+  ngOnDestroy(): void {
+    this.authService.userDestroy.next();
+    this.authService.userDestroy.complete();
   }
 }

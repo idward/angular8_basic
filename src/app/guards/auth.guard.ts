@@ -7,7 +7,7 @@ import {
   UrlTree
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map, tap, take } from 'rxjs/operators';
+import { map, tap, take, takeUntil } from 'rxjs/operators';
 
 import { AuthService } from '../services/auth.service';
 import { User } from './../models/user.model';
@@ -28,6 +28,7 @@ export class AuthGuardService implements CanActivate {
     | UrlTree {
     return this.authService.userEmitter.pipe(
       take(1),
+      takeUntil(this.authService.userDestroy),
       map((user: User) => {
         console.log(user);
         if (!!user === false) {
