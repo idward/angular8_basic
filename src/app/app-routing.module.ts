@@ -4,11 +4,11 @@ import { Routes, RouterModule } from '@angular/router';
 import { ErrorPageComponent } from './pages/errors/error-page/error-page.component';
 
 const routes: Routes = [
+  // {
+  //   path: 'recipes',
+  //   loadChildren: './modules/recipes/recipes.module#RecipesModule'
+  // },
   { path: '', redirectTo: 'recipes', pathMatch: 'full' },
-  {
-    path: 'recipes',
-    loadChildren: './modules/recipes/recipes.module#RecipesModule'
-  },
   {
     path: 'error',
     component: ErrorPageComponent,

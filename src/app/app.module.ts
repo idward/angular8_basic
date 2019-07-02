@@ -22,9 +22,9 @@ import { ErrorPageComponent } from './pages/errors/error-page/error-page.compone
   imports: [
     BrowserModule,
     HttpClientModule,
-    RecipesModule,
-    ShoppingListModule,
     AuthModule,
+    ShoppingListModule,
+    RecipesModule,
     AppRoutingModule,
     CoreModule,
   ],

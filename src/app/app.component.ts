@@ -6,15 +6,10 @@ import { AuthService } from './services/auth.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
     this.authService.initialAuthUserStatus();
-  }
-
-  ngOnDestroy(): void {
-    this.authService.userDestroy.next();
-    this.authService.userDestroy.complete();
   }
 }

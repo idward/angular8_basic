@@ -18,7 +18,7 @@ import { PlaceholderDirective } from './../../directives/placeholder.directive';
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css']
 })
-export class AuthComponent implements OnInit, OnDestroy {
+export class AuthComponent implements OnInit {
   isLoginMode: boolean = false;
   errorMessage: string;
   @ViewChild('f', { static: true }) authForm: NgForm;
@@ -89,10 +89,5 @@ export class AuthComponent implements OnInit, OnDestroy {
       alertViewContainer.clear();
       this.alertCmpSubs.unsubscribe();
     });
-  }
-
-  ngOnDestroy(): void {
-    this.authService.userDestroy.next();
-    this.authService.userDestroy.complete();
   }
 }

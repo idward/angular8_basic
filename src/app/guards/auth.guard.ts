@@ -28,17 +28,19 @@ export class AuthGuardService implements CanActivate {
     | UrlTree {
     return this.authService.userEmitter.pipe(
       take(1),
-      takeUntil(this.authService.userDestroy),
       map((user: User) => {
         console.log(user);
+        console.log(state);
         if (!!user === false) {
-          if (route.routeConfig.path === 'auth') {
+          if (state.url === '/auth' || state.url === '/') {
             return true;
           }
-          return this.router.createUrlTree(['/auth']);
+          // return this.router.createUrlTree(['/auth']);
+          return false;
         } else {
-          if (route.routeConfig.path === 'auth') {
-            return this.router.createUrlTree(['/recipes']);
+          if (state.url === '/auth') {
+            // return this.router.createUrlTree(['/recipes']);
+            return false;
           }
           return true;
         }
