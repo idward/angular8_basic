@@ -1,24 +1,14 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AuthComponent } from './pages/auth/auth.component';
-import { ShoppingListComponent } from './pages/shopping-list/shopping-list.component';
-import { ShoppingEditComponent } from './pages/shopping-list/shopping-edit/shopping-edit.component';
 import { ErrorPageComponent } from './pages/errors/error-page/error-page.component';
-import { AlertComponent } from './components/alert/alert.component';
-
-import { BasicHighlightDirective } from './directives/basic-highlight.directive';
-import { BetterHighlightDirective } from './directives/better-highlight.directive';
-import { UnlessDirective } from './directives/unless.directive';
-import { PlaceholderDirective } from './directives/placeholder.directive';
 
 import { AuthGuardService } from './guards/auth.guard';
+import { SharedModule } from './modules/shared/shared.module';
 
 const routes: Routes = [
   { path: '', redirectTo: 'recipes', pathMatch: 'full' },
-  { path: 'shopping-list', component: ShoppingListComponent },
   { path: 'auth', component: AuthComponent, canActivate: [AuthGuardService] },
   {
     path: 'error',
@@ -31,22 +21,12 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AuthComponent,
-    ShoppingListComponent,
-    ShoppingEditComponent,
-    ErrorPageComponent,
-    AlertComponent,
-    BasicHighlightDirective,
-    BetterHighlightDirective,
-    UnlessDirective,
-    PlaceholderDirective
+    ErrorPageComponent
   ],
   imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    SharedModule
   ],
-  exports: [RouterModule, PlaceholderDirective],
-  entryComponents: [AlertComponent]
+  exports: [RouterModule]
 })
 export class AppRoutingModule {}

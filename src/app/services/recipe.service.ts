@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Observable, of } from 'rxjs';
 
 import { Recipe } from '../models/recipe.model';
 import { Ingredient } from '../models/ingredient.model';
@@ -68,5 +68,10 @@ export class RecipeService {
 
   addIngredientsToShoppingList(ingredients: Ingredient[]): void {
     this.shoppingListService.integrateIngredients(ingredients);
+  }
+
+  confirm(message?: string): Observable<boolean> {
+    const confirmation = window.confirm(message || 'Are you sure?');
+    return of(confirmation);
   }
 }

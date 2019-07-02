@@ -1,6 +1,7 @@
 import { ActivatedRoute, Router, Data } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 import { Recipe } from 'src/app/models/recipe.model';
 import { Ingredient } from 'src/app/models/ingredient.model';
@@ -15,6 +16,7 @@ import { RecipeService } from 'src/app/services/recipe.service';
 export class RecipeEditComponent implements OnInit {
   recipeForm: FormGroup;
   recipe: Recipe;
+  isChanged: boolean = false;
 
   constructor(
     private recipeService: RecipeService,
@@ -43,9 +45,11 @@ export class RecipeEditComponent implements OnInit {
         });
         this.setIngredientsArray(this.recipe.ingredients);
       } else {
-        const route = this.router.config.find(r => r.path === 'error');
-        route.data.message = 'Recipe you choosed is not existed';
-        this.router.navigate(['/error']);
+        if (this.router.routerState.snapshot.url !== '/recipes/new') {
+          const route = this.router.config.find(r => r.path === 'error');
+          route.data.message = 'Recipe you choosed is not existed';
+          this.router.navigate(['/error']);
+        }
       }
     });
   }
@@ -107,5 +111,18 @@ export class RecipeEditComponent implements OnInit {
 
   onDeleteIngredient(index: number): void {
     (<FormArray>this.recipeForm.get('ingredients')).removeAt(index);
+  }
+
+  canDeactive(): Observable<boolean> | Promise<boolean> | boolean {
+    // const formValue = this.recipeForm.value;
+    // Object.keys(formValue).forEach(key => {
+    //   if (formValue[key].trim() !== '') {
+    //     return this.recipeService.confirm(
+    //       'Discard changes before your leaving?'
+    //     );
+    //   }
+    // });
+    // 结合生命周期去判断是否改变
+    return true;
   }
 }

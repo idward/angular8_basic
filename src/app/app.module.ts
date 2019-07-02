@@ -1,10 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { RecipesModule } from './modules/recipes/recipes.module';
+import { ShoppingListModule } from './modules/shopping-list/shopping-list.module';
 
 import { AuthInterceptorService } from './http/auth-interceptor.service';
 
@@ -20,9 +20,9 @@ import { HeaderComponent } from './components/layout/header/header.component';
   declarations: [AppComponent, HeaderComponent],
   imports: [
     BrowserModule,
-    FormsModule,
     HttpClientModule,
     RecipesModule,
+    ShoppingListModule,
     AppRoutingModule
   ],
   providers: [

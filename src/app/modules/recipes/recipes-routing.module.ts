@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuardService } from 'src/app/guards/auth.guard';
@@ -18,7 +17,11 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
     children: [
       { path: '', component: RecipeStartComponent },
-      { path: 'new', component: RecipeEditComponent },
+      {
+        path: 'new',
+        component: RecipeEditComponent
+        // canDeactivate: [CanDeactivateGuard]
+      },
       {
         path: ':id',
         component: RecipeDetailComponent,
@@ -35,8 +38,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [],
-  imports: [CommonModule, RouterModule.forChild(routes)],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
 export class RecipesRoutingModule {}

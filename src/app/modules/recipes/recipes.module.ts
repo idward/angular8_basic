@@ -1,7 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { RecipesComponent } from 'src/app/pages/recipes/recipes.component';
 import { RecipeStartComponent } from 'src/app/pages/recipes/recipe-start/recipe-start.component';
@@ -10,9 +7,11 @@ import { RecipeEditComponent } from 'src/app/pages/recipes/recipe-edit/recipe-ed
 import { RecipeDetailComponent } from 'src/app/pages/recipes/recipe-detail/recipe-detail.component';
 import { RecipeItemComponent } from 'src/app/pages/recipes/recipe-list/recipe-item/recipe-item.component';
 
-import { RecipesRoutingModule } from './recipes-routing.module';
+import { CanDeactivateGuard } from './../../guards/can-deactive.guard';
 import { RecipePipe } from 'src/app/pipes/recipe.pipe';
-import { DropdownDirective } from 'src/app/directives/dropdown.directive';
+
+import { RecipesRoutingModule } from './recipes-routing.module';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -22,16 +21,13 @@ import { DropdownDirective } from 'src/app/directives/dropdown.directive';
     RecipeEditComponent,
     RecipeDetailComponent,
     RecipeItemComponent,
-    RecipePipe,
-    DropdownDirective
+    RecipePipe
   ],
   imports: [
-    CommonModule,
-    RouterModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RecipesRoutingModule
+    RecipesRoutingModule,
+    SharedModule
   ],
-  exports: [DropdownDirective]
+  exports: [SharedModule],
+  providers: [CanDeactivateGuard]
 })
 export class RecipesModule {}
