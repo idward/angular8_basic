@@ -4,9 +4,6 @@ import { HttpClientModule } from '@angular/common/http';
 /* custom modules */
 import { CoreModule } from './modules/core/core.module';
 import { AppRoutingModule } from './app-routing.module';
-import { RecipesModule } from './modules/recipes/recipes.module';
-import { ShoppingListModule } from './modules/shopping-list/shopping-list.module';
-import { AuthModule } from './modules/auth/auth.module';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/layout/header/header.component';
@@ -22,9 +19,9 @@ import { ErrorPageComponent } from './pages/errors/error-page/error-page.compone
   imports: [
     BrowserModule,
     HttpClientModule,
-    AuthModule,
-    ShoppingListModule,
-    RecipesModule,
+    // AuthModule,
+    // RecipesModule,
+    // ShoppingListModule,
     AppRoutingModule,
     CoreModule,
   ],

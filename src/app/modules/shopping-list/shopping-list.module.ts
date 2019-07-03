@@ -10,7 +10,7 @@ import { ShoppingEditComponent } from 'src/app/pages/shopping-list/shopping-edit
   declarations: [ShoppingListComponent, ShoppingEditComponent],
   imports: [
     RouterModule.forChild([
-      { path: 'shopping-list', component: ShoppingListComponent }
+      { path: '', component: ShoppingListComponent, pathMatch: 'full' }
     ]),
     SharedModule
   ],

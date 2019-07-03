@@ -12,9 +12,10 @@ import { AuthComponent } from 'src/app/pages/auth/auth.component';
     SharedModule,
     RouterModule.forChild([
       {
-        path: 'auth',
+        path: '',
         component: AuthComponent,
-        canActivate: [AuthGuardService]
+        canActivate: [AuthGuardService],
+        pathMatch: 'full'
       }
     ])
   ],
