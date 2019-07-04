@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, Subject, BehaviorSubject } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 
-import config from '../config/index';
+import { environment } from '../../environments/environment';
 import { AuthResponseData } from '../models/common.model';
 import { User } from '../models/user.model';
 
@@ -20,7 +20,7 @@ export class AuthService {
     return this.http
       .post<AuthResponseData>(
         `https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=${
-          config['APP_KEY']
+          environment.API_KEY
         }`,
         {
           email,
@@ -46,7 +46,7 @@ export class AuthService {
     return this.http
       .post<AuthResponseData>(
         `https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=${
-          config['APP_KEY']
+          environment.API_KEY
         }`,
         {
           email,
