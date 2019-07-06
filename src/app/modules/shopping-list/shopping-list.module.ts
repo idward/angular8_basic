@@ -9,9 +9,7 @@ import { ShoppingEditComponent } from 'src/app/pages/shopping-list/shopping-edit
 @NgModule({
   declarations: [ShoppingListComponent, ShoppingEditComponent],
   imports: [
-    RouterModule.forChild([
-      { path: '', component: ShoppingListComponent, pathMatch: 'full' }
-    ]),
+    RouterModule.forChild([{ path: '', component: ShoppingListComponent }]),
     SharedModule
   ],
   exports: [RouterModule]

@@ -15,7 +15,6 @@ import { AuthComponent } from 'src/app/pages/auth/auth.component';
         path: '',
         component: AuthComponent,
         canActivate: [AuthGuardService],
-        pathMatch: 'full'
       }
     ])
   ],

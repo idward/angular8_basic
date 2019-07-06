@@ -15,7 +15,6 @@ const routes: Routes = [
     path: '',
     component: RecipesComponent,
     canActivate: [AuthGuardService],
-    pathMatch: 'full',
     children: [
       { path: '', component: RecipeStartComponent },
       {

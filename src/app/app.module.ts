@@ -6,6 +6,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 /* custom modules */
 import { CoreModule } from './modules/core/core.module';
 import { AppRoutingModule } from './app-routing.module';
+import { HeaderModule } from './modules/header/header.module';
 /* components */
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/layout/header/header.component';
@@ -19,10 +20,11 @@ import { ShoppingListReducer } from './store/reducers/shopping-list.reducer';
  * FeaturedModule, SharedModule]
  */
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, ErrorPageComponent],
+  declarations: [AppComponent, ErrorPageComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
+    HeaderModule,
     // AuthModule,
     // RecipesModule,
     // ShoppingListModule,
