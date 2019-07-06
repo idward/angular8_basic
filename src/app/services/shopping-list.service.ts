@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
+
+import * as ShoppingListActions from '../store/actions/shopping-list.action';
+import { ShoppingListStore } from '../store/reducers/shopping-list.reducer';
 
 import { Ingredient } from '../models/ingredient.model';
 import { EditedIngredient } from '../models/common.model';
@@ -15,11 +19,12 @@ export class ShoppingListService {
   ingredientEmitter: Subject<Ingredient[]> = new Subject<Ingredient[]>();
   startEditEmitter: Subject<EditedIngredient> = new Subject<EditedIngredient>();
 
-  constructor() {}
+  constructor(private store: Store<{ shoppingList: ShoppingListStore }>) {}
 
   addIngredient(ingredient: Ingredient): void {
-    this.ingredients.push(ingredient);
-    this.ingredientEmitter.next(this.ingredients);
+    // this.ingredients.push(ingredient);
+    // this.ingredientEmitter.next(this.ingredients);
+    this.store.dispatch(new ShoppingListActions.AddIngredient(ingredient));
   }
 
   integrateIngredients(newIngredients: Ingredient[]): void {

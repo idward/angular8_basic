@@ -33,6 +33,9 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     );
   }
 
+  /**
+   * 创建shopping-list
+   */
   onSubmit(): void {
     const name = this.shoppingForm.value.name;
     const amount = this.shoppingForm.value.amount;
@@ -41,6 +44,9 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     this.shoppingForm.reset();
   }
 
+  /**
+   * 修改shopping-list
+   */
   onEdit(): void {
     this.editedIngredient.name = this.shoppingForm.value.name;
     this.editedIngredient.amount = this.shoppingForm.value.amount;
