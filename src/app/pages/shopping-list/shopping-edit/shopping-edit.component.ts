@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 
+import { ShoppingListStore } from './../../../store/reducers/shopping-list.reducer';
 import { ShoppingListService } from 'src/app/services/shopping-list.service';
 import { Ingredient } from 'src/app/models/ingredient.model';
 import { EditedIngredient } from 'src/app/models/common.model';
@@ -18,19 +20,35 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   editedIndex: number;
   editSubscription: Subscription;
 
-  constructor(private shoppingListService: ShoppingListService) {}
+  constructor(
+    private shoppingListService: ShoppingListService,
+    private store: Store<{ shoppingList: ShoppingListStore }>
+  ) {}
 
   ngOnInit() {
-    this.editSubscription = this.shoppingListService.startEditEmitter.subscribe(
-      (data: EditedIngredient) => {
+    // this.editSubscription = this.shoppingListService.startEditEmitter.subscribe(
+    //   (data: EditedIngredient) => {
+    //     this.editedIngredient = data.editedIngredient;
+    //     this.editedIndex = data.index;
+    //     this.shoppingForm.setValue({
+    //       name: this.editedIngredient.name,
+    //       amount: this.editedIngredient.amount
+    //     });
+    //   }
+    // );
+
+    this.editSubscription = this.store
+      .select('shoppingList')
+      .subscribe((data: ShoppingListStore) => {
         this.editedIngredient = data.editedIngredient;
-        this.editedIndex = data.index;
-        this.shoppingForm.setValue({
-          name: this.editedIngredient.name,
-          amount: this.editedIngredient.amount
-        });
-      }
-    );
+        this.editedIndex = data.indexOfIngredients;
+        if (this.editedIngredient) {
+          this.shoppingForm.setValue({
+            name: this.editedIngredient.name,
+            amount: this.editedIngredient.amount
+          });
+        }
+      });
   }
 
   /**

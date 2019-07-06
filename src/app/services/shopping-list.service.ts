@@ -36,6 +36,10 @@ export class ShoppingListService {
     return this.ingredients;
   }
 
+  startEditIngredient(index: number): void {
+    this.store.dispatch(new ShoppingListActions.EditIngredient(index));
+  }
+
   editIngredient(editedElement: EditedIngredient): void {
     this.ingredients = this.ingredients.map(
       (ingredient: Ingredient, index: number) => {

@@ -32,10 +32,11 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   }
 
   onEdit(index: number): void {
-    this.shoppingListService.startEditEmitter.next({
-      index,
-      editedIngredient: this.ingredients[index]
-    });
+    // this.shoppingListService.startEditEmitter.next({
+    //   index,
+    //   editedIngredient: this.ingredients[index]
+    // });
+    this.shoppingListService.startEditIngredient(index);
   }
 
   trackByFn(index: number, item: Ingredient): string {
