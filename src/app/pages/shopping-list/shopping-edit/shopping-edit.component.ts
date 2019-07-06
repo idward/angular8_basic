@@ -66,14 +66,16 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
    * 修改shopping-list
    */
   onEdit(): void {
-    this.editedIngredient.name = this.shoppingForm.value.name;
-    this.editedIngredient.amount = this.shoppingForm.value.amount;
-    const editedIngredient = {
+    const name = this.shoppingForm.value.name;
+    const amount = this.shoppingForm.value.amount;
+    const ingredient = new Ingredient(name, amount);
+    const editedIngredient: EditedIngredient = {
       index: this.editedIndex,
-      editedIngredient: this.editedIngredient
+      ingredient
     };
     this.shoppingListService.editIngredient(editedIngredient);
     this.editedIngredient = null;
+    this.editedIndex = null;
     this.shoppingForm.reset();
   }
 
@@ -85,9 +87,9 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   }
 
   onDelete(): void {
-    const removedIngredient = {
+    const removedIngredient: EditedIngredient = {
       index: this.editedIndex,
-      editedIngredient: this.editedIngredient
+      ingredient: this.editedIngredient
     };
     this.shoppingListService.removeIngredient(removedIngredient);
     this.shoppingForm.reset();

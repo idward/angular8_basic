@@ -1,3 +1,4 @@
+import { EditedIngredient } from 'src/app/models/common.model';
 import * as ShoppingListActions from '../actions/shopping-list.action';
 import { Ingredient } from 'src/app/models/ingredient.model';
 
@@ -34,6 +35,34 @@ export function ShoppingListReducer(
         ...state,
         editedIngredient,
         indexOfIngredients: action.payload
+      };
+    case ShoppingListActions.UPDATE_INGREDIENT:
+      // 性能优化不是最好的方案
+      const updatedIngredients = state.ingredients.map(
+        (ingredient: Ingredient, index: number) => {
+          if (index === action.payload.index) {
+            ingredient = action.payload.ingredient;
+          }
+          return ingredient;
+        }
+      );
+      return {
+        ...state,
+        ingredients: updatedIngredients,
+        EditedIngredient: null,
+        indexOfIngredients: null
+      };
+    case ShoppingListActions.DELETE_INGREDIENT:
+      const removedIngredients = state.ingredients.filter(
+        (ingredient: Ingredient, index: number) => {
+          return index !== action.payload;
+        }
+      );
+      return {
+        ...state,
+        ingredients: removedIngredients,
+        editedIngredient: null,
+        indexOfIngredients: null
       };
     default:
       return state;

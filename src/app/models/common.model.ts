@@ -2,7 +2,7 @@ import { Ingredient } from './ingredient.model';
 
 export interface EditedIngredient {
   index: number;
-  editedIngredient: Ingredient;
+  ingredient: Ingredient;
 }
 
 export interface AuthResponseData {

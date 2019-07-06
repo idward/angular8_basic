@@ -41,23 +41,30 @@ export class ShoppingListService {
   }
 
   editIngredient(editedElement: EditedIngredient): void {
-    this.ingredients = this.ingredients.map(
-      (ingredient: Ingredient, index: number) => {
-        if (index === editedElement.index) {
-          return editedElement.editedIngredient;
-        }
-        return ingredient;
-      }
-    );
+    // this.ingredients = this.ingredients.map(
+    //   (ingredient: Ingredient, index: number) => {
+    //     if (index === editedElement.index) {
+    //       return editedElement.editedIngredient;
+    //     }
+    //     return ingredient;
+    //   }
+    // );
     // this.ingredientEmitter.next(this.ingredients);
+
+    this.store.dispatch(
+      new ShoppingListActions.UpdateIngredient(editedElement)
+    );
   }
 
   removeIngredient(removedElement: EditedIngredient): void {
-    this.ingredients = this.ingredients.filter(
-      (ingredient: Ingredient, index: number) => {
-        return index !== removedElement.index;
-      }
+    // this.ingredients = this.ingredients.filter(
+    //   (ingredient: Ingredient, index: number) => {
+    //     return index !== removedElement.index;
+    //   }
+    // );
+    // this.ingredientEmitter.next(this.ingredients);
+    this.store.dispatch(
+      new ShoppingListActions.DeleteIngredient(removedElement.index)
     );
-    this.ingredientEmitter.next(this.ingredients);
   }
 }
