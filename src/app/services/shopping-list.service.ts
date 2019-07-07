@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 
 import * as ShoppingListActions from '../store/actions/shopping-list.action';
-import { ShoppingListStore } from '../store/reducers/shopping-list.reducer';
+import { ShoppingListState } from '../store/reducers/shopping-list.reducer';
 
 import { Ingredient } from '../models/ingredient.model';
 import { EditedIngredient } from '../models/common.model';
@@ -19,7 +19,7 @@ export class ShoppingListService {
   ingredientEmitter: Subject<Ingredient[]> = new Subject<Ingredient[]>();
   startEditEmitter: Subject<EditedIngredient> = new Subject<EditedIngredient>();
 
-  constructor(private store: Store<{ shoppingList: ShoppingListStore }>) {}
+  constructor(private store: Store<{ shoppingList: ShoppingListState }>) {}
 
   addIngredient(ingredient: Ingredient): void {
     // this.ingredients.push(ingredient);
@@ -54,6 +54,10 @@ export class ShoppingListService {
     this.store.dispatch(
       new ShoppingListActions.UpdateIngredient(editedElement)
     );
+  }
+
+  stopEditIngredient(): void {
+    this.store.dispatch(new ShoppingListActions.ClearIngredient());
   }
 
   removeIngredient(removedElement: EditedIngredient): void {

@@ -2,7 +2,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { Subject, Observable, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import { ShoppingListStore } from './../store/reducers/shopping-list.reducer';
+import { ShoppingListState } from './../store/reducers/shopping-list.reducer';
 import * as ShoppingListActions from '../store/actions/shopping-list.action';
 import { ShoppingListService } from './shopping-list.service';
 
@@ -33,7 +33,7 @@ export class RecipeService {
 
   constructor(
     private shoppingListService: ShoppingListService,
-    private store: Store<{ shoppingList: ShoppingListStore }>
+    private store: Store<{ shoppingList: ShoppingListState }>
   ) {}
 
   addRecipe(recipe: Recipe): void {

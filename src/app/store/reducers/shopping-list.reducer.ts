@@ -1,14 +1,13 @@
-import { EditedIngredient } from 'src/app/models/common.model';
 import * as ShoppingListActions from '../actions/shopping-list.action';
 import { Ingredient } from 'src/app/models/ingredient.model';
 
-export interface ShoppingListStore {
+export interface ShoppingListState {
   ingredients: Ingredient[];
   editedIngredient: Ingredient;
   indexOfIngredients: number;
 }
 
-const initialState: ShoppingListStore = {
+const initialState: ShoppingListState = {
   ingredients: [new Ingredient('Apple', 5), new Ingredient('Tomatoes', 10)],
   editedIngredient: null,
   indexOfIngredients: null
@@ -30,11 +29,17 @@ export function ShoppingListReducer(
         ingredients: [...state.ingredients, ...action.payload]
       };
     case ShoppingListActions.EDIT_INGREDIENT:
-      const editedIngredient = state.ingredients[action.payload];
+      const editedIngredient = { ...state.ingredients[action.payload] };
       return {
         ...state,
         editedIngredient,
         indexOfIngredients: action.payload
+      };
+    case ShoppingListActions.CLEAR_INGREDIENT:
+      return {
+        ...state,
+        editedIngredient: null,
+        indexOfIngredients: null
       };
     case ShoppingListActions.UPDATE_INGREDIENT:
       // 性能优化不是最好的方案

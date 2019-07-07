@@ -9,10 +9,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { HeaderModule } from './modules/header/header.module';
 /* components */
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './components/layout/header/header.component';
 import { ErrorPageComponent } from './pages/errors/error-page/error-page.component';
 /* reducers */
-import { ShoppingListReducer } from './store/reducers/shopping-list.reducer';
+import { rootReducer } from './store';
 
 /**
  * 模块分类
@@ -28,7 +27,7 @@ import { ShoppingListReducer } from './store/reducers/shopping-list.reducer';
     // AuthModule,
     // RecipesModule,
     // ShoppingListModule,
-    StoreModule.forRoot({ shoppingList: ShoppingListReducer }),
+    StoreModule.forRoot(rootReducer),
     StoreDevtoolsModule.instrument({
       maxAge: 10
     }),
