@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 
+import { AppState } from './../store/index';
 import * as ShoppingListActions from '../store/actions/shopping-list.action';
-import { ShoppingListState } from '../store/reducers/shopping-list.reducer';
 
 import { Ingredient } from '../models/ingredient.model';
 import { EditedIngredient } from '../models/common.model';
@@ -19,7 +19,7 @@ export class ShoppingListService {
   ingredientEmitter: Subject<Ingredient[]> = new Subject<Ingredient[]>();
   startEditEmitter: Subject<EditedIngredient> = new Subject<EditedIngredient>();
 
-  constructor(private store: Store<{ shoppingList: ShoppingListState }>) {}
+  constructor(private store: Store<AppState>) {}
 
   addIngredient(ingredient: Ingredient): void {
     // this.ingredients.push(ingredient);

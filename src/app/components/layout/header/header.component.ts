@@ -1,12 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+
+import { AppState } from './../../../store/index';
+import { AuthState } from './../../../store/reducers/auth.reducer';
 
 import { AuthService } from './../../../services/auth.service';
 import { RecipeService } from '../../../services/recipe.service';
 import { DataStorageService } from '../../../services/data-storage.service';
 import { Recipe } from '../../../models/recipe.model';
-import { User } from './../../../models/user.model';
 
 @Component({
   selector: 'app-header',
@@ -21,12 +24,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private recipeSevice: RecipeService,
     private dataStorageSevice: DataStorageService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private store: Store<AppState>
   ) {}
 
   ngOnInit() {
-    this.userSub = this.authService.userEmitter.subscribe((user: User) => {
-      this.isAuthenticated = !!user;
+    // this.userSub = this.authService.userEmitter.subscribe((user: User) => {
+    //   this.isAuthenticated = !!user;
+    // });
+    this.userSub = this.store.select('auth').subscribe((data: AuthState) => {
+      this.isAuthenticated = !!data.user;
     });
   }
 

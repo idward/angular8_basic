@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError, Subject, BehaviorSubject } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
+
+import { AppState } from './../store/index';
+import * as AuthActions from '../store/actions/auth.action';
 
 import { environment } from '../../environments/environment';
 import { AuthResponseData } from '../models/common.model';
@@ -14,7 +18,7 @@ export class AuthService {
   userEmitter: BehaviorSubject<User> = new BehaviorSubject<User>(null);
   logoutTimerId: any;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private store: Store<AppState>) {}
 
   signup(email: string, password: string): Observable<any> {
     return this.http
@@ -89,7 +93,8 @@ export class AuthService {
     localStorage.setItem('userData', JSON.stringify(user));
     // set automatic logout
     this.autoLogout(+expiredDate * 1000);
-    this.userEmitter.next(user);
+    // this.userEmitter.next(user);
+    this.store.dispatch(new AuthActions.Login(user));
   }
 
   initialAuthUserStatus(): void {
@@ -104,7 +109,7 @@ export class AuthService {
       userData._token,
       userData._tokenExpiredDate
     );
-
+    // token过期
     if (!user.token) {
       return;
     }
@@ -114,14 +119,16 @@ export class AuthService {
       new Date(userData._tokenExpiredDate).getTime() - new Date().getTime();
     this.autoLogout(expiredDuration);
     // send authenticated user
-    this.userEmitter.next(user);
+    // this.userEmitter.next(user);
+    this.store.dispatch(new AuthActions.Login(user));
   }
 
   logout(): void {
-    this.userEmitter.next(null);
+    // this.userEmitter.next(null);
+    this.store.dispatch(new AuthActions.Logout());
     localStorage.removeItem('userData');
     localStorage.removeItem('token');
-    // remove autoLogout
+    // remove logoutTimeId
     if (this.logoutTimerId) {
       clearTimeout(this.logoutTimerId);
     }
