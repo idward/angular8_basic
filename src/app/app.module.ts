@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
 /* custom modules */
 import { CoreModule } from './modules/core/core.module';
 import { AppRoutingModule } from './app-routing.module';
@@ -12,6 +13,7 @@ import { AppComponent } from './app.component';
 import { ErrorPageComponent } from './pages/errors/error-page/error-page.component';
 /* reducers */
 import { rootReducer } from './store';
+import { AuthEffect } from './store/effects/auth.effect';
 
 /**
  * 模块分类
@@ -31,6 +33,7 @@ import { rootReducer } from './store';
     StoreDevtoolsModule.instrument({
       maxAge: 10
     }),
+    EffectsModule.forRoot([AuthEffect]),
     AppRoutingModule,
     CoreModule
   ],

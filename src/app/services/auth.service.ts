@@ -15,7 +15,7 @@ import { User } from '../models/user.model';
   providedIn: 'root'
 })
 export class AuthService {
-  userEmitter: BehaviorSubject<User> = new BehaviorSubject<User>(null);
+  // userEmitter: BehaviorSubject<User> = new BehaviorSubject<User>(null);
   logoutTimerId: any;
 
   constructor(private http: HttpClient, private store: Store<AppState>) {}
