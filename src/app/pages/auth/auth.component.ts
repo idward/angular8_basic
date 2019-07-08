@@ -7,32 +7,45 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 
 import { AuthService } from './../../services/auth.service';
 import { AlertComponent } from '../../components/alert/alert.component';
 import { PlaceholderDirective } from './../../directives/placeholder.directive';
 
+import { AppState } from 'src/app/store';
+import * as AuthActions from '../../store/actions/auth.action';
+import { AuthState } from 'src/app/store/reducers/auth.reducer';
+
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css']
 })
-export class AuthComponent implements OnInit {
+export class AuthComponent implements OnInit, OnDestroy {
   isLoginMode: boolean = false;
   errorMessage: string;
   @ViewChild('f', { static: true }) authForm: NgForm;
   @ViewChild(PlaceholderDirective, { static: true })
   domContainer: PlaceholderDirective;
   alertCmpSubs: Subscription;
+  authSubs: Subscription;
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private componentFactoryResolver: ComponentFactoryResolver
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private store: Store<AppState>
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.authSubs = this.store.select('auth').subscribe((data: AuthState) => {
+      if (data.user) {
+        this.store.dispatch(new AuthActions.LoginSuccess(data.user));
+      }
+    });
+  }
 
   onSwitchMode(): void {
     this.isLoginMode = !this.isLoginMode;
@@ -42,8 +55,9 @@ export class AuthComponent implements OnInit {
     return this.authService.signup(email, password);
   }
 
-  onLogin(email: string, password: string): Observable<any> {
-    return this.authService.login(email, password);
+  onLogin(email: string, password: string): void {
+    // return this.authService.login(email, password);
+    this.store.dispatch(new AuthActions.LoginStart({ email, password }));
   }
 
   onSubmit() {
@@ -52,23 +66,23 @@ export class AuthComponent implements OnInit {
     let resultRes: Observable<any>;
 
     if (this.isLoginMode) {
-      resultRes = this.onLogin(email, password);
+      this.onLogin(email, password);
     } else {
       resultRes = this.onSignup(email, password);
     }
     // recieve the response data
-    resultRes.subscribe(
-      data => {
-        console.log(data);
-        this.errorMessage = null;
-        this.router.navigate(['/recipes']);
-      },
-      error => {
-        console.log(error);
-        this.errorMessage = error;
-        this.showAlertDialog(error);
-      }
-    );
+    // resultRes.subscribe(
+    //   data => {
+    //     console.log(data);
+    //     this.errorMessage = null;
+    //     this.router.navigate(['/recipes']);
+    //   },
+    //   error => {
+    //     console.log(error);
+    //     this.errorMessage = error;
+    //     this.showAlertDialog(error);
+    //   }
+    // );
     // reset the form value
     this.authForm.reset();
   }
@@ -89,5 +103,9 @@ export class AuthComponent implements OnInit {
       alertViewContainer.clear();
       this.alertCmpSubs.unsubscribe();
     });
+  }
+
+  ngOnDestroy(): void {
+    this.authSubs.unsubscribe();
   }
 }

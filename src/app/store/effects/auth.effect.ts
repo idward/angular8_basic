@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { switchMap, catchError, map } from 'rxjs/operators';
+import { switchMap, catchError, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 import * as AuthActions from '../actions/auth.action';
@@ -16,10 +16,8 @@ export interface LoginModel {
 
 @Injectable()
 export class AuthEffect {
-  constructor(
-    private action$: Actions,
-    private http: HttpClient
-  ) {}
+  logoutTimerId: any;
+  constructor(private action$: Actions, private http: HttpClient) {}
 
   @Effect()
   authLogin = this.action$.pipe(
@@ -53,6 +51,43 @@ export class AuthEffect {
             return of();
           })
         );
+    })
+  );
+
+  @Effect()
+  authSuccess = this.action$.pipe(
+    ofType(AuthActions.LOG_IN_SUCCESS),
+    switchMap((authData: AuthActions.LoginSuccess) => {
+      // save user to localstorage
+      localStorage.setItem('userData', JSON.stringify(authData.payload));
+      const expiredDuration =
+        authData.payload.tokenExpiredDate.getTime() - new Date().getTime();
+      return of(new AuthActions.AutoLogout(expiredDuration));
+    })
+  );
+
+  @Effect()
+  authAutoLogout = this.action$.pipe(
+    ofType(AuthActions.AUTO_LOG_OUT),
+    switchMap((authData: AuthActions.AutoLogout) => {
+      // setTimeout
+      this.logoutTimerId = setTimeout(() => {
+        return of(new AuthActions.Logout());
+      }, authData.payload);
+
+      return of({ type: 'DUMMY' });
+    })
+  );
+
+  @Effect({ dispatch: false })
+  authLogout = this.action$.pipe(
+    ofType(AuthActions.LOG_OUT),
+    tap(() => {
+      localStorage.removeItem('userData');
+      localStorage.removeItem('token');
+      if (this.logoutTimerId) {
+        clearTimeout(this.logoutTimerId);
+      }
     })
   );
 }
