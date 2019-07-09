@@ -26,7 +26,7 @@ export class AuthEffect {
 
   @Effect()
   authLogin = this.action$.pipe(
-    ofType(AuthActions.LOG_IN_START),
+    ofType(AuthActions.LOGIN_START),
     switchMap((authData: AuthActions.LoginStart) => {
       return this.http
         .post<AuthResponseData>(
@@ -50,13 +50,13 @@ export class AuthEffect {
               responseData.idToken,
               tokenExpiredDate
             );
-            return new AuthActions.Login(user);
+            return new AuthActions.Authenticate(user);
           }),
           catchError((errorRes: HttpErrorResponse) => {
             let errorMessage: string = 'An unknown error occurred';
 
             if (!errorRes.error || !errorRes.error.error) {
-              return of(new AuthActions.LoginFail(errorMessage));
+              return of(new AuthActions.AuthenticateFail(errorMessage));
             }
             switch (errorRes.error.error.message) {
               case 'EMAIL_EXISTS':
@@ -69,7 +69,7 @@ export class AuthEffect {
                 errorMessage = 'Password is not match';
                 break;
             }
-            return of(new AuthActions.LoginFail(errorMessage));
+            return of(new AuthActions.AuthenticateFail(errorMessage));
           })
         );
     })
@@ -77,19 +77,19 @@ export class AuthEffect {
 
   @Effect({ dispatch: false })
   authSuccess = this.action$.pipe(
-    ofType(AuthActions.LOG_IN),
-    // tap((authData: AuthActions.Login) => {
-    //   // save user to localstorage
-    //   localStorage.setItem('userData', JSON.stringify(authData.payload));
-    //   const expiredDuration =
-    //     authData.payload.tokenExpiredDate.getTime() - new Date().getTime();
-    //   // setTimeout
-    //   this.logoutTimerId = setTimeout(() => {
-    //     return of(new AuthActions.Logout());
-    //   }, expiredDuration);
-    //   return of
-    // //   return of(new AuthActions.AutoLogout(expiredDuration));
-    // }),
+    ofType(AuthActions.AUTHENTICATE),
+    tap((authData: AuthActions.Authenticate) => {
+      // save user to localstorage
+      localStorage.setItem('userData', JSON.stringify(authData.payload));
+      const expiredDuration =
+        authData.payload.tokenExpiredDate.getTime() - new Date().getTime();
+      // setTimeout
+      this.logoutTimerId = setTimeout(() => {
+        return of(new AuthActions.Logout());
+      }, expiredDuration);
+      return of()
+    //   return of(new AuthActions.AutoLogout(expiredDuration));
+    }),
     tap(() => {
       this.router.navigate(['/']);
     })

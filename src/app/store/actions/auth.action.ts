@@ -1,35 +1,35 @@
 import { Action } from '@ngrx/store';
 import { User } from './../../models/user.model';
 
-export const LOG_IN_START = 'LOG_IN_START';
-export const LOG_IN_FAIL = 'LOG_IN_FAIL';
-export const AUTO_LOG_OUT = 'AUTO_LOG_OUT';
-export const LOG_IN = 'LOG_IN';
-export const LOG_OUT = 'LOG_OUT';
+export const LOGIN_START = 'LOGIN_START';
+export const AUTHENTICATE_FAIL = 'AUTHENTICATE_FAIL';
+export const AUTO_LOGOUT = 'AUTO_LOG_OUT';
+export const AUTHENTICATE = 'AUTHENTICATE';
+export const LOGOUT = 'LOGOUT';
 export const CLEAR_ERROR = 'CLEAR_ERROR';
 
 export class LoginStart implements Action {
-  readonly type = LOG_IN_START;
+  readonly type = LOGIN_START;
   constructor(public payload: { email: string; password: string }) {}
 }
 
-export class LoginFail implements Action {
-  readonly type = LOG_IN_FAIL;
+export class AuthenticateFail implements Action {
+  readonly type = AUTHENTICATE_FAIL;
   constructor(public payload: string) {}
 }
 
 export class AutoLogout implements Action {
-  readonly type = AUTO_LOG_OUT;
+  readonly type = AUTO_LOGOUT;
   constructor(public payload: number) {}
 }
 
-export class Login implements Action {
-  readonly type = LOG_IN;
+export class Authenticate implements Action {
+  readonly type = AUTHENTICATE;
   constructor(public payload: User) {}
 }
 
 export class Logout implements Action {
-  readonly type = LOG_OUT;
+  readonly type = LOGOUT;
 }
 
 export class ClearError implements Action {
@@ -37,9 +37,9 @@ export class ClearError implements Action {
 }
 
 export type AuthAction =
-  | Login
+  | Authenticate
   | Logout
   | LoginStart
-  | LoginFail
+  | AuthenticateFail
   | AutoLogout
   | ClearError;

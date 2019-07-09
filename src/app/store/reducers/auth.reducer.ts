@@ -16,24 +16,24 @@ export function AuthReducer(
   action: AuthActions.AuthAction
 ) {
   switch (action.type) {
-    case AuthActions.LOG_IN:
+    case AuthActions.AUTHENTICATE:
       return {
         ...state,
         user: action.payload,
         authError: null
       };
-    case AuthActions.LOG_OUT:
+    case AuthActions.LOGOUT:
       return {
         ...state,
         user: null,
         authError: null
       };
-    case AuthActions.LOG_IN_START:
+    case AuthActions.LOGIN_START:
       return {
         ...state,
         authError: null
       };
-    case AuthActions.LOG_IN_FAIL:
+    case AuthActions.AUTHENTICATE_FAIL:
       return {
         ...state,
         user: null,
