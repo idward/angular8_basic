@@ -14,6 +14,8 @@ import { ErrorPageComponent } from './pages/errors/error-page/error-page.compone
 /* reducers */
 import { rootReducer } from './store';
 import { AuthEffect } from './store/effects/auth.effect';
+/* environment */
+import { environment } from '../environments/environment';
 
 /**
  * 模块分类
@@ -30,9 +32,9 @@ import { AuthEffect } from './store/effects/auth.effect';
     // RecipesModule,
     // ShoppingListModule,
     StoreModule.forRoot(rootReducer),
-    StoreDevtoolsModule.instrument({
-      maxAge: 10
-    }),
+    !environment.production
+      ? StoreDevtoolsModule.instrument()
+      : [],
     EffectsModule.forRoot([AuthEffect]),
     AppRoutingModule,
     CoreModule

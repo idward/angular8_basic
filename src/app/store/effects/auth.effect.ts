@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { switchMap, catchError, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -17,7 +18,11 @@ export interface LoginModel {
 @Injectable()
 export class AuthEffect {
   logoutTimerId: any;
-  constructor(private action$: Actions, private http: HttpClient) {}
+  constructor(
+    private action$: Actions,
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
   @Effect()
   authLogin = this.action$.pipe(
@@ -47,37 +52,61 @@ export class AuthEffect {
             );
             return new AuthActions.Login(user);
           }),
-          catchError(error => {
-            return of();
+          catchError((errorRes: HttpErrorResponse) => {
+            let errorMessage: string = 'An unknown error occurred';
+
+            if (!errorRes.error || !errorRes.error.error) {
+              return of(new AuthActions.LoginFail(errorMessage));
+            }
+            switch (errorRes.error.error.message) {
+              case 'EMAIL_EXISTS':
+                errorMessage = 'Email has been taken';
+                break;
+              case 'EMAIL_NOT_FOUND':
+                errorMessage = 'User is not existed';
+                break;
+              case 'INVALID_PASSWORD':
+                errorMessage = 'Password is not match';
+                break;
+            }
+            return of(new AuthActions.LoginFail(errorMessage));
           })
         );
     })
   );
 
-  @Effect()
+  @Effect({ dispatch: false })
   authSuccess = this.action$.pipe(
-    ofType(AuthActions.LOG_IN_SUCCESS),
-    switchMap((authData: AuthActions.LoginSuccess) => {
-      // save user to localstorage
-      localStorage.setItem('userData', JSON.stringify(authData.payload));
-      const expiredDuration =
-        authData.payload.tokenExpiredDate.getTime() - new Date().getTime();
-      return of(new AuthActions.AutoLogout(expiredDuration));
+    ofType(AuthActions.LOG_IN),
+    // tap((authData: AuthActions.Login) => {
+    //   // save user to localstorage
+    //   localStorage.setItem('userData', JSON.stringify(authData.payload));
+    //   const expiredDuration =
+    //     authData.payload.tokenExpiredDate.getTime() - new Date().getTime();
+    //   // setTimeout
+    //   this.logoutTimerId = setTimeout(() => {
+    //     return of(new AuthActions.Logout());
+    //   }, expiredDuration);
+    //   return of
+    // //   return of(new AuthActions.AutoLogout(expiredDuration));
+    // }),
+    tap(() => {
+      this.router.navigate(['/']);
     })
   );
 
-  @Effect()
-  authAutoLogout = this.action$.pipe(
-    ofType(AuthActions.AUTO_LOG_OUT),
-    switchMap((authData: AuthActions.AutoLogout) => {
-      // setTimeout
-      this.logoutTimerId = setTimeout(() => {
-        return of(new AuthActions.Logout());
-      }, authData.payload);
+//   @Effect()
+//   authAutoLogout = this.action$.pipe(
+//     ofType(AuthActions.AUTO_LOG_OUT),
+//     switchMap((authData: AuthActions.AutoLogout) => {
+//       // setTimeout
+//       this.logoutTimerId = setTimeout(() => {
+//         return of(new AuthActions.Logout());
+//       }, authData.payload);
 
-      return of({ type: 'DUMMY' });
-    })
-  );
+//       return of({ type: 'DUMMY' });
+//     })
+//   );
 
   @Effect({ dispatch: false })
   authLogout = this.action$.pipe(
@@ -88,6 +117,7 @@ export class AuthEffect {
       if (this.logoutTimerId) {
         clearTimeout(this.logoutTimerId);
       }
+      this.router.navigate(['/auth']);
     })
   );
 }

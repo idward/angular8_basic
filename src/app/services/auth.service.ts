@@ -126,12 +126,12 @@ export class AuthService {
   logout(): void {
     // this.userEmitter.next(null);
     this.store.dispatch(new AuthActions.Logout());
-    localStorage.removeItem('userData');
-    localStorage.removeItem('token');
+    // localStorage.removeItem('userData');
+    // localStorage.removeItem('token');
     // remove logoutTimeId
-    if (this.logoutTimerId) {
-      clearTimeout(this.logoutTimerId);
-    }
+    // if (this.logoutTimerId) {
+    //   clearTimeout(this.logoutTimerId);
+    // }
   }
 
   autoLogout(expiredDuration: number): void {

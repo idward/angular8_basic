@@ -1,3 +1,4 @@
+import { AuthAction } from './../../store/actions/auth.action';
 import {
   Component,
   OnInit,
@@ -41,9 +42,14 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.authSubs = this.store.select('auth').subscribe((data: AuthState) => {
-      if (data.user) {
-        this.store.dispatch(new AuthActions.LoginSuccess(data.user));
-      }
+      // don't dispatch anything inside subscribe method
+      // import! import! import!
+      // if (data.user && !data.authError) {
+      //   this.store.dispatch(new AuthActions.LoginSuccess(data.user));
+      // } else if (!data.user && data.authError) {
+      //   this.showAlertDialog(data.authError);
+      // }
+      this.errorMessage = data.authError;
     });
   }
 
@@ -102,6 +108,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     this.alertCmpSubs = alertCmp.instance.closeEvt.subscribe(() => {
       alertViewContainer.clear();
       this.alertCmpSubs.unsubscribe();
+      this.store.dispatch(new AuthActions.ClearError());
     });
   }
 
