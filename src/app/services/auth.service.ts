@@ -94,7 +94,7 @@ export class AuthService {
     // set automatic logout
     this.autoLogout(+expiredDate * 1000);
     // this.userEmitter.next(user);
-    this.store.dispatch(new AuthActions.Login(user));
+    this.store.dispatch(new AuthActions.Authenticate(user));
   }
 
   initialAuthUserStatus(): void {
@@ -115,12 +115,12 @@ export class AuthService {
     }
 
     // set autoLogout
-    const expiredDuration =
-      new Date(userData._tokenExpiredDate).getTime() - new Date().getTime();
-    this.autoLogout(expiredDuration);
+    // const expiredDuration =
+    //   new Date(userData._tokenExpiredDate).getTime() - new Date().getTime();
+    // this.autoLogout(expiredDuration);
     // send authenticated user
     // this.userEmitter.next(user);
-    this.store.dispatch(new AuthActions.Login(user));
+    this.store.dispatch(new AuthActions.Authenticate(user));
   }
 
   logout(): void {

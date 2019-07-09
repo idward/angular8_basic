@@ -75,49 +75,41 @@ export class AuthEffect {
     })
   );
 
-  @Effect({ dispatch: false })
+  @Effect()
   authSuccess = this.action$.pipe(
     ofType(AuthActions.AUTHENTICATE),
-    tap((authData: AuthActions.Authenticate) => {
+    switchMap((authData: AuthActions.Authenticate) => {
       // save user to localstorage
-      localStorage.setItem('userData', JSON.stringify(authData.payload));
+      if (!localStorage.getItem('userData')) {
+        localStorage.setItem('userData', JSON.stringify(authData.payload));
+      }
       const expiredDuration =
         authData.payload.tokenExpiredDate.getTime() - new Date().getTime();
       // setTimeout
       this.logoutTimerId = setTimeout(() => {
         return of(new AuthActions.Logout());
       }, expiredDuration);
-      return of()
-    //   return of(new AuthActions.AutoLogout(expiredDuration));
-    }),
-    tap(() => {
-      this.router.navigate(['/']);
+      return of(new AuthActions.AuthenticateSuccess());
     })
   );
 
-//   @Effect()
-//   authAutoLogout = this.action$.pipe(
-//     ofType(AuthActions.AUTO_LOG_OUT),
-//     switchMap((authData: AuthActions.AutoLogout) => {
-//       // setTimeout
-//       this.logoutTimerId = setTimeout(() => {
-//         return of(new AuthActions.Logout());
-//       }, authData.payload);
-
-//       return of({ type: 'DUMMY' });
-//     })
-//   );
-
   @Effect({ dispatch: false })
   authLogout = this.action$.pipe(
-    ofType(AuthActions.LOG_OUT),
+    ofType(AuthActions.LOGOUT),
     tap(() => {
       localStorage.removeItem('userData');
       localStorage.removeItem('token');
       if (this.logoutTimerId) {
         clearTimeout(this.logoutTimerId);
       }
-      this.router.navigate(['/auth']);
+    })
+  );
+
+  @Effect({ dispatch: false })
+  authRedirect = this.action$.pipe(
+    ofType(AuthActions.AUTHENTICATE_SUCCESS, AuthActions.LOGOUT),
+    tap(() => {
+      this.router.navigate(['/']);
     })
   );
 }

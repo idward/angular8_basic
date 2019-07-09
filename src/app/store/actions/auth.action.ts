@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 import { User } from './../../models/user.model';
 
 export const LOGIN_START = 'LOGIN_START';
+export const AUTHENTICATE_SUCCESS = 'AUTHENTICATE_SUCCESS';
 export const AUTHENTICATE_FAIL = 'AUTHENTICATE_FAIL';
 export const AUTO_LOGOUT = 'AUTO_LOG_OUT';
 export const AUTHENTICATE = 'AUTHENTICATE';
@@ -11,6 +12,10 @@ export const CLEAR_ERROR = 'CLEAR_ERROR';
 export class LoginStart implements Action {
   readonly type = LOGIN_START;
   constructor(public payload: { email: string; password: string }) {}
+}
+
+export class AuthenticateSuccess implements Action {
+  readonly type = AUTHENTICATE_SUCCESS;
 }
 
 export class AuthenticateFail implements Action {
