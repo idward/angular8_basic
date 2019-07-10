@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Pipe } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { switchMap, catchError, map, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, Observable, timer } from 'rxjs';
 
 import * as AuthActions from '../actions/auth.action';
 import { environment } from 'src/environments/environment';
@@ -17,7 +17,6 @@ export interface LoginModel {
 
 @Injectable()
 export class AuthEffect {
-  logoutTimerId: any;
   constructor(
     private action$: Actions,
     private http: HttpClient,
@@ -85,11 +84,18 @@ export class AuthEffect {
       }
       const expiredDuration =
         authData.payload.tokenExpiredDate.getTime() - new Date().getTime();
-      // setTimeout
-      this.logoutTimerId = setTimeout(() => {
-        return of(new AuthActions.Logout());
-      }, expiredDuration);
-      return of(new AuthActions.AuthenticateSuccess());
+      return of(new AuthActions.AuthenticateSuccess(expiredDuration));
+    })
+  );
+
+  @Effect()
+  autoLogout = this.action$.pipe(
+    ofType(AuthActions.AUTHENTICATE_SUCCESS),
+    switchMap((authData: AuthActions.AuthenticateSuccess) => {
+      return timer(authData.payload);
+    }),
+    map(() => {
+      return new AuthActions.Logout();
     })
   );
 
@@ -99,9 +105,6 @@ export class AuthEffect {
     tap(() => {
       localStorage.removeItem('userData');
       localStorage.removeItem('token');
-      if (this.logoutTimerId) {
-        clearTimeout(this.logoutTimerId);
-      }
     })
   );
 

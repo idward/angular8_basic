@@ -16,6 +16,7 @@ export class LoginStart implements Action {
 
 export class AuthenticateSuccess implements Action {
   readonly type = AUTHENTICATE_SUCCESS;
+  constructor(public payload: number) {}
 }
 
 export class AuthenticateFail implements Action {
