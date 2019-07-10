@@ -21,7 +21,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   amountPattern: any = /^((?!(0))[0-9]*)$/;
   editedIngredient: Ingredient;
   editedIndex: number;
-  editSubscription: Subscription;
+  editSubs: Subscription;
 
   constructor(
     private shoppingListService: ShoppingListService,
@@ -40,7 +40,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     //   }
     // );
 
-    this.editSubscription = this.store
+    this.editSubs = this.store
       .select('shoppingList')
       .subscribe((data: ShoppingListState) => {
         this.editedIngredient = data.editedIngredient;
@@ -97,6 +97,8 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.editSubscription.unsubscribe();
+    if (this.editSubs) {
+      this.editSubs.unsubscribe();
+    }
   }
 }

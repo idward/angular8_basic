@@ -50,6 +50,9 @@ export class AuthComponent implements OnInit, OnDestroy {
       //   this.showAlertDialog(data.authError);
       // }
       this.errorMessage = data.authError;
+      if (this.errorMessage) {
+        this.showAlertDialog(this.errorMessage);
+      }
     });
   }
 
@@ -113,6 +116,8 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.authSubs.unsubscribe();
+    if (this.authSubs) {
+      this.authSubs.unsubscribe();
+    }
   }
 }

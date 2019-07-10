@@ -12,7 +12,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class RecipeListComponent implements OnInit, OnDestroy {
   recipes: Recipe[];
-  recipeSubcription: Subscription;
+  recipeSubs: Subscription;
   filterName: string = 'name';
   filterKey: string = '';
 
@@ -24,7 +24,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.recipes = this.recipeService.getRecipes();
-    this.recipeSubcription = this.recipeService.recipeChanged.subscribe(
+    this.recipeSubs = this.recipeService.recipeChanged.subscribe(
       (recipes: Recipe[]) => {
         this.recipes = recipes;
       }
@@ -40,6 +40,8 @@ export class RecipeListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.recipeSubcription.unsubscribe();
+    if (this.recipeSubs) {
+      this.recipeSubs.unsubscribe();
+    }
   }
 }

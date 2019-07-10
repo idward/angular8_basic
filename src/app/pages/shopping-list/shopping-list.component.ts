@@ -30,6 +30,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     //   }
     // );
 
+    // Observable<ShoppingListState>
     this.ingredients = this.store.select('shoppingList');
   }
 
