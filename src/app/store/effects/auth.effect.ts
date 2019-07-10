@@ -2,6 +2,7 @@ import { Injectable, Pipe } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Action } from '@ngrx/store';
 import { switchMap, catchError, map, tap } from 'rxjs/operators';
 import { of, Observable, timer } from 'rxjs';
 
@@ -10,10 +11,42 @@ import { environment } from 'src/environments/environment';
 import { AuthResponseData } from 'src/app/models/common.model';
 import { User } from 'src/app/models/user.model';
 
-export interface LoginModel {
-  email: string;
-  password: string;
-}
+// 认证成功后用户信息处理
+const authenticationHandler = (responseData: AuthResponseData): Action => {
+  const tokenExpiredDate = new Date(
+    new Date().getTime() + +responseData.expiresIn * 1000
+  );
+  const user = new User(
+    responseData.email,
+    responseData.localId,
+    responseData.idToken,
+    tokenExpiredDate
+  );
+  return new AuthActions.Authenticate(user);
+};
+
+// 认证失败后错误信息处理
+const errorHandler = (
+  errorRes: HttpErrorResponse
+): Observable<AuthActions.AuthenticateFail> => {
+  let errorMessage: string = 'An unknown error occurred';
+
+  if (!errorRes.error || !errorRes.error.error) {
+    return of(new AuthActions.AuthenticateFail(errorMessage));
+  }
+  switch (errorRes.error.error.message) {
+    case 'EMAIL_EXISTS':
+      errorMessage = 'Email has been taken';
+      break;
+    case 'EMAIL_NOT_FOUND':
+      errorMessage = 'User is not existed';
+      break;
+    case 'INVALID_PASSWORD':
+      errorMessage = 'Password is not match';
+      break;
+  }
+  return of(new AuthActions.AuthenticateFail(errorMessage));
+};
 
 @Injectable()
 export class AuthEffect {
@@ -39,37 +72,30 @@ export class AuthEffect {
           }
         )
         .pipe(
-          map(responseData => {
-            const tokenExpiredDate = new Date(
-              new Date().getTime() + +responseData.expiresIn * 1000
-            );
-            const user = new User(
-              responseData.email,
-              responseData.localId,
-              responseData.idToken,
-              tokenExpiredDate
-            );
-            return new AuthActions.Authenticate(user);
-          }),
-          catchError((errorRes: HttpErrorResponse) => {
-            let errorMessage: string = 'An unknown error occurred';
+          map(authenticationHandler),
+          catchError(errorHandler)
+        );
+    })
+  );
 
-            if (!errorRes.error || !errorRes.error.error) {
-              return of(new AuthActions.AuthenticateFail(errorMessage));
-            }
-            switch (errorRes.error.error.message) {
-              case 'EMAIL_EXISTS':
-                errorMessage = 'Email has been taken';
-                break;
-              case 'EMAIL_NOT_FOUND':
-                errorMessage = 'User is not existed';
-                break;
-              case 'INVALID_PASSWORD':
-                errorMessage = 'Password is not match';
-                break;
-            }
-            return of(new AuthActions.AuthenticateFail(errorMessage));
-          })
+  @Effect()
+  authSignup = this.action$.pipe(
+    ofType(AuthActions.SIGNUP_START),
+    switchMap((authData: AuthActions.SignupStart) => {
+      return this.http
+        .post<AuthResponseData>(
+          `https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=${
+            environment.API_KEY
+          }`,
+          {
+            email: authData.payload.email,
+            password: authData.payload.password,
+            returnSecureToken: true
+          }
+        )
+        .pipe(
+          map(authenticationHandler),
+          catchError(errorHandler)
         );
     })
   );
