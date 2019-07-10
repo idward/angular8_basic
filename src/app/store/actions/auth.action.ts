@@ -47,5 +47,4 @@ export type AuthAction =
   | Logout
   | LoginStart
   | AuthenticateFail
-  | AutoLogout
   | ClearError;
