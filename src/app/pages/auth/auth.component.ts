@@ -60,8 +60,9 @@ export class AuthComponent implements OnInit, OnDestroy {
     this.isLoginMode = !this.isLoginMode;
   }
 
-  onSignup(email: string, password: string): Observable<any> {
-    return this.authService.signup(email, password);
+  onSignup(email: string, password: string): void {
+    // return this.authService.signup(email, password);
+    this.store.dispatch(new AuthActions.SignupStart({ email, password }));
   }
 
   onLogin(email: string, password: string): void {
@@ -72,12 +73,12 @@ export class AuthComponent implements OnInit, OnDestroy {
   onSubmit() {
     const email = this.authForm.value.email;
     const password = this.authForm.value.password;
-    let resultRes: Observable<any>;
+    // let resultRes: Observable<any>;
 
     if (this.isLoginMode) {
       this.onLogin(email, password);
     } else {
-      resultRes = this.onSignup(email, password);
+      this.onSignup(email, password);
     }
     // recieve the response data
     // resultRes.subscribe(

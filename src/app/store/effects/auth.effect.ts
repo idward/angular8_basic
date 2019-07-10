@@ -16,6 +16,9 @@ const authenticationHandler = (responseData: AuthResponseData): Action => {
   const tokenExpiredDate = new Date(
     new Date().getTime() + +responseData.expiresIn * 1000
   );
+  // const tokenExpiredDate = new Date(
+  //   new Date().getTime() + 10000
+  // );
   const user = new User(
     responseData.email,
     responseData.localId,
@@ -109,7 +112,7 @@ export class AuthEffect {
         localStorage.setItem('userData', JSON.stringify(authData.payload));
       }
       const expiredDuration =
-        authData.payload.tokenExpiredDate.getTime() - new Date().getTime();
+        new Date(authData.payload.tokenExpiredDate).getTime() - new Date().getTime();
       return of(new AuthActions.AuthenticateSuccess(expiredDuration));
     })
   );
