@@ -89,6 +89,29 @@ export class AuthEffect {
   );
 
   @Effect()
+  autoLogin = this.action$.pipe(
+    ofType(AuthActions.AUTO_LOGIN),
+    switchMap((authData: AuthActions.AutoLogin) => {
+      const userData = JSON.parse(localStorage.getItem('userData'));
+      if (!userData) {
+        return of({ type: 'DUMMY' });
+      }
+      // 如果不重新new User(), token会无法拿到
+      const user = new User(
+        userData.email,
+        userData.id,
+        userData._token,
+        userData._tokenExpiredDate
+      );
+      // token过期
+      if (!user.token) {
+        return of({ type: 'DUMMY' });
+      }
+      return of(new AuthActions.Authenticate(user));
+    })
+  );
+
+  @Effect()
   autoLogout = this.action$.pipe(
     ofType(AuthActions.AUTHENTICATE_SUCCESS),
     switchMap((authData: AuthActions.AuthenticateSuccess) => {

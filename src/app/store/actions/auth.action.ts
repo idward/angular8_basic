@@ -4,7 +4,7 @@ import { User } from './../../models/user.model';
 export const LOGIN_START = 'LOGIN_START';
 export const AUTHENTICATE_SUCCESS = 'AUTHENTICATE_SUCCESS';
 export const AUTHENTICATE_FAIL = 'AUTHENTICATE_FAIL';
-export const AUTO_LOGOUT = 'AUTO_LOG_OUT';
+export const AUTO_LOGIN = 'AUTO_LOGIN';
 export const AUTHENTICATE = 'AUTHENTICATE';
 export const LOGOUT = 'LOGOUT';
 export const CLEAR_ERROR = 'CLEAR_ERROR';
@@ -24,8 +24,8 @@ export class AuthenticateFail implements Action {
   constructor(public payload: string) {}
 }
 
-export class AutoLogout implements Action {
-  readonly type = AUTO_LOGOUT;
+export class AutoLogin implements Action {
+  readonly type = AUTO_LOGIN;
   constructor(public payload: number) {}
 }
 
