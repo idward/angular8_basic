@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
 /* custom modules */
 import { CoreModule } from './modules/core/core.module';
 import { AppRoutingModule } from './app-routing.module';
@@ -32,10 +33,9 @@ import { environment } from '../environments/environment';
     // RecipesModule,
     // ShoppingListModule,
     StoreModule.forRoot(rootReducer),
-    !environment.production
-      ? StoreDevtoolsModule.instrument()
-      : [],
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([AuthEffect]),
+    StoreRouterConnectingModule.forRoot(),
     AppRoutingModule,
     CoreModule
   ],
