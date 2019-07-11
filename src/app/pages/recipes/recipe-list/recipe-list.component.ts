@@ -1,8 +1,13 @@
-import { Subscription } from 'rxjs';
 import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
-import { Recipe } from '../../../models/recipe.model';
-import { RecipeService } from 'src/app/services/recipe.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Subscription, Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+
+import { AppState } from 'src/app/store';
+import { RecipeState } from 'src/app/store/reducers/recipe.reducer';
+
+// import { RecipeService } from 'src/app/services/recipe.service';
+import { Recipe } from '../../../models/recipe.model';
 
 @Component({
   selector: 'app-recipe-list',
@@ -11,24 +16,27 @@ import { Router, ActivatedRoute } from '@angular/router';
   encapsulation: ViewEncapsulation.None // 全局样式 Global
 })
 export class RecipeListComponent implements OnInit, OnDestroy {
-  recipes: Recipe[];
+  recipesStore: Observable<RecipeState>;
   recipeSubs: Subscription;
   filterName: string = 'name';
   filterKey: string = '';
 
   constructor(
-    private recipeService: RecipeService,
+    // private recipeService: RecipeService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private store: Store<AppState>
   ) {}
 
   ngOnInit() {
-    this.recipes = this.recipeService.getRecipes();
-    this.recipeSubs = this.recipeService.recipeChanged.subscribe(
-      (recipes: Recipe[]) => {
-        this.recipes = recipes;
-      }
-    );
+    // this.recipes = this.recipeService.getRecipes();
+    // this.recipeSubs = this.recipeService.recipeChanged.subscribe(
+    //   (recipes: Recipe[]) => {
+    //     this.recipes = recipes;
+    //   }
+    // );
+
+    this.recipesStore = this.store.select('recipes');
   }
 
   onRecipeNew(): void {
