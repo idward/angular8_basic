@@ -15,6 +15,7 @@ import { ErrorPageComponent } from './pages/errors/error-page/error-page.compone
 /* reducers */
 import { rootReducer } from './store';
 import { AuthEffect } from './store/effects/auth.effect';
+import { RecipeEffect } from './store/effects/recipe.effect';
 /* environment */
 import { environment } from '../environments/environment';
 
@@ -34,7 +35,7 @@ import { environment } from '../environments/environment';
     // ShoppingListModule,
     StoreModule.forRoot(rootReducer),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
-    EffectsModule.forRoot([AuthEffect]),
+    EffectsModule.forRoot([AuthEffect, RecipeEffect]),
     StoreRouterConnectingModule.forRoot(),
     AppRoutingModule,
     CoreModule
