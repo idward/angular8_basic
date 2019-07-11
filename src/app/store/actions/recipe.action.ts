@@ -6,6 +6,8 @@ export const FETCH_RECIPES_START = 'FETCH_RECIPES_START';
 export const FETCH_RECIPES = 'FETCH_RECIPES';
 export const ADD_RECIPE = 'ADD_RECIPE';
 export const ADD_RECIPE_SUCCESS = 'ADD_RECIPE_SUCCESS';
+export const UPDATE_RECIPE = 'UPDATE_RECIPE';
+export const UPDATE_RECIPE_SUCCESS = 'UPDATE_RECIPE_SUCCESS';
 export const DELETE_RECIPE = 'DELETE_RECIPE';
 export const DELETE_RECIPE_SUCCESS = 'DELETE_RECIPE_SUCCESS';
 
@@ -32,6 +34,15 @@ export class AddRecipeSuccess implements Action {
   readonly type = ADD_RECIPE_SUCCESS;
 }
 
+export class UpdateRecipe implements Action {
+  readonly type = UPDATE_RECIPE;
+  constructor(public payload: { id: string; recipe: Recipe }) {}
+}
+
+export class UpdateRecipeSuccess implements Action {
+  readonly type = UPDATE_RECIPE_SUCCESS;
+}
+
 export class DeleteRecipe implements Action {
   readonly type = DELETE_RECIPE;
   constructor(public payload: string) {}
@@ -41,4 +52,4 @@ export class DeleteRecipeSuccess implements Action {
   readonly type = DELETE_RECIPE_SUCCESS;
 }
 
-export type RecipeAction = SetRecipes | FetchRecipes | AddRecipe | DeleteRecipe;
+export type RecipeAction = SetRecipes | FetchRecipes | AddRecipe | UpdateRecipe | DeleteRecipe;

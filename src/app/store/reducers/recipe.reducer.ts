@@ -28,6 +28,16 @@ export function RecipeReducer(
         ...state,
         recipes: [...state.recipes, action.payload]
       };
+    case RecipeActions.UPDATE_RECIPE:
+      return {
+        ...state,
+        recipes: state.recipes.map((recipe: Recipe) => {
+          if (recipe.id === action.payload.id) {
+            recipe = action.payload.recipe;
+          }
+          return recipe;
+        })
+      };
     case RecipeActions.DELETE_RECIPE:
       return {
         ...state,

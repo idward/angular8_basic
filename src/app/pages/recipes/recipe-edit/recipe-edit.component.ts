@@ -85,8 +85,14 @@ export class RecipeEditComponent implements OnInit, AfterViewInit {
     if (this.recipe) {
       // update
       this.isSaveMode = true;
-      this.recipeService.updateRecipe(this.recipe.id, this.recipeForm.value);
-      this.router.navigate(['../'], { relativeTo: this.route });
+      this.store.dispatch(
+        new RecipeActions.UpdateRecipe({
+          id: this.recipe.id,
+          recipe: this.recipeForm.value
+        })
+      );
+      // this.recipeService.updateRecipe(this.recipe.id, this.recipeForm.value);
+      // this.router.navigate(['../'], { relativeTo: this.route });
     } else {
       // create
       const value = this.recipeForm.value;

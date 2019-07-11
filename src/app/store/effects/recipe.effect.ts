@@ -49,6 +49,14 @@ export class RecipeEffect {
   );
 
   @Effect()
+  updateReicpe = this.action$.pipe(
+    ofType(RecipeActions.UPDATE_RECIPE),
+    switchMap((recipeData: RecipeActions.UpdateRecipe) => {
+      return of(new RecipeActions.UpdateRecipeSuccess());
+    })
+  );
+
+  @Effect()
   deleteRecipe = this.action$.pipe(
     ofType(RecipeActions.DELETE_RECIPE),
     switchMap((recipeData: RecipeActions.DeleteRecipe) => {
@@ -58,7 +66,11 @@ export class RecipeEffect {
 
   @Effect({ dispatch: true })
   recipeRedirect = this.action$.pipe(
-    ofType(RecipeActions.DELETE_RECIPE_SUCCESS, RecipeActions.ADD_RECIPE_SUCCESS),
+    ofType(
+      RecipeActions.DELETE_RECIPE_SUCCESS,
+      RecipeActions.ADD_RECIPE_SUCCESS,
+      RecipeActions.UPDATE_RECIPE_SUCCESS
+    ),
     tap(() => {
       this.router.navigate(['../'], { relativeTo: this.route });
     })
