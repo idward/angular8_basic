@@ -1,7 +1,11 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router, Data } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+
+import { AppState } from 'src/app/store';
+import * as RecipeActions from '../../../store/actions/recipe.action';
 
 import { Recipe } from 'src/app/models/recipe.model';
 import { Ingredient } from 'src/app/models/ingredient.model';
@@ -22,7 +26,8 @@ export class RecipeEditComponent implements OnInit, AfterViewInit {
   constructor(
     private recipeService: RecipeService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private store: Store<AppState>
   ) {
     this.recipeForm = new FormGroup({
       name: new FormControl('', Validators.required),
@@ -91,9 +96,10 @@ export class RecipeEditComponent implements OnInit, AfterViewInit {
         value.imagePath,
         value.ingredients
       );
-      this.recipeService.addRecipe(newRecipe);
+      this.store.dispatch(new RecipeActions.AddRecipe(newRecipe));
       this.recipeForm.reset();
-      this.router.navigate(['../'], { relativeTo: this.route });
+      // this.recipeService.addRecipe(newRecipe);
+      // this.router.navigate(['../'], { relativeTo: this.route });
     }
   }
 

@@ -23,6 +23,11 @@ export function RecipeReducer(
         ...state,
         recipes: action.payload
       };
+    case RecipeActions.ADD_RECIPE:
+      return {
+        ...state,
+        recipes: [...state.recipes, action.payload]
+      };
     case RecipeActions.DELETE_RECIPE:
       return {
         ...state,
