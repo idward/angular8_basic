@@ -5,6 +5,8 @@ import { Subscription } from 'rxjs';
 
 import { AppState } from './../../../store/index';
 import { AuthState } from './../../../store/reducers/auth.reducer';
+import { RecipeState } from '../../../store/reducers/recipe.reducer';
+import * as RecipeActions from '../../../store/actions/recipe.action';
 
 import { AuthService } from './../../../services/auth.service';
 import { RecipeService } from '../../../services/recipe.service';
@@ -18,7 +20,9 @@ import { Recipe } from '../../../models/recipe.model';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   isAuthenticated: boolean = false;
-  userSub: Subscription;
+  recipes: Recipe[];
+  userSubs: Subscription;
+  recipeSubs: Subscription;
 
   constructor(
     private recipeSevice: RecipeService,
@@ -32,21 +36,29 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // this.userSub = this.authService.userEmitter.subscribe((user: User) => {
     //   this.isAuthenticated = !!user;
     // });
-    this.userSub = this.store.select('auth').subscribe((data: AuthState) => {
+    this.userSubs = this.store.select('auth').subscribe((data: AuthState) => {
       this.isAuthenticated = !!data.user;
     });
+
+    this.recipeSubs = this.store
+      .select('recipes')
+      .subscribe((data: RecipeState) => {
+        this.recipes = data.recipes;
+      });
   }
 
   onSaveData(): void {
-    const recipes = this.recipeSevice.getRecipes();
-    this.dataStorageSevice.storeRecipes(recipes);
+    // const recipes = this.recipeSevice.getRecipes();
+    // this.dataStorageSevice.storeRecipes(recipes);
+    this.store.dispatch(new RecipeActions.SetRecipes(this.recipes));
   }
 
   onFetchData(): void {
-    this.dataStorageSevice.fetchRecipes().subscribe((recipes: Recipe[]) => {
-      console.log(recipes);
-      this.recipeSevice.setRecipes(recipes);
-    });
+    // this.dataStorageSevice.fetchRecipes().subscribe((recipes: Recipe[]) => {
+    //   console.log(recipes);
+    //   this.recipeSevice.setRecipes(recipes);
+    // });
+    this.store.dispatch(new RecipeActions.FetchRecipesStart());
   }
 
   onLogout(): void {
@@ -55,8 +67,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.userSub) {
-      this.userSub.unsubscribe();
+    if (this.userSubs) {
+      this.userSubs.unsubscribe();
+    }
+
+    if (this.recipeSubs) {
+      this.recipeSubs.unsubscribe();
     }
   }
 }

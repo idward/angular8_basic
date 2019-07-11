@@ -18,5 +18,12 @@ export function RecipeReducer(
         ...state,
         recipes: action.payload
       };
+    case RecipeActions.FETCH_RECIPES:
+      return {
+        ...state,
+        recipes: action.payload
+      };
+    default:
+      return state;
   }
 }
