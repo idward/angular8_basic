@@ -23,6 +23,13 @@ export function RecipeReducer(
         ...state,
         recipes: action.payload
       };
+    case RecipeActions.DELETE_RECIPE:
+      return {
+        ...state,
+        recipes: state.recipes.filter(
+          (recipe: Recipe) => recipe.id !== action.payload
+        )
+      };
     default:
       return state;
   }

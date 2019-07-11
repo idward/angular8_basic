@@ -1,12 +1,19 @@
 import { HttpClient } from '@angular/common/http';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import * as RecipeActions from '../actions/recipe.action';
-import { switchMap, map } from 'rxjs/operators';
+import { switchMap, map, tap } from 'rxjs/operators';
 
 import { Recipe } from 'src/app/models/recipe.model';
+import { of } from 'rxjs';
 
 export class RecipeEffect {
-  constructor(private action$: Actions, private http: HttpClient) {}
+  constructor(
+    private action$: Actions,
+    private http: HttpClient,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   @Effect()
   setRecipes = this.action$.pipe(
@@ -30,6 +37,21 @@ export class RecipeEffect {
             return new RecipeActions.FetchRecipes(recipesData);
           })
         );
+    })
+  );
+
+  @Effect()
+  deleteRecipe = this.action$.pipe(
+    ofType(RecipeActions.DELETE_RECIPE),
+    switchMap((recipeData: RecipeActions.DeleteRecipe) => {
+      return of(new RecipeActions.DeleteRecipeSuccess());
+    })
+  );
+
+  @Effect({ dispatch: true })
+  recipeRedirect = this.action$.pipe(
+    tap(() => {
+      this.router.navigate(['../'], { relativeTo: this.route });
     })
   );
 }
