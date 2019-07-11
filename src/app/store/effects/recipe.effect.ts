@@ -28,7 +28,7 @@ export class RecipeEffect {
 
   @Effect()
   fetchRecipes = this.action$.pipe(
-    ofType(RecipeActions.FETCH_RECIPES),
+    ofType(RecipeActions.FETCH_RECIPES_START),
     switchMap(() => {
       return this.http
         .get<Recipe[]>('https://angular-http-e4f15.firebaseio.com/recipes.json')
