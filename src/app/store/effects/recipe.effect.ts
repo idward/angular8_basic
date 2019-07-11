@@ -1,3 +1,4 @@
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
@@ -7,6 +8,7 @@ import { switchMap, map, tap } from 'rxjs/operators';
 import { Recipe } from 'src/app/models/recipe.model';
 import { of } from 'rxjs';
 
+@Injectable()
 export class RecipeEffect {
   constructor(
     private action$: Actions,
@@ -34,7 +36,7 @@ export class RecipeEffect {
         .get<Recipe[]>('https://angular-http-e4f15.firebaseio.com/recipes.json')
         .pipe(
           map(recipesData => {
-            return new RecipeActions.FetchRecipes(recipesData);
+            return new RecipeActions.FetchRecipes(recipesData || []);
           })
         );
     })
@@ -64,7 +66,7 @@ export class RecipeEffect {
     })
   );
 
-  @Effect({ dispatch: true })
+  @Effect({ dispatch: false })
   recipeRedirect = this.action$.pipe(
     ofType(
       RecipeActions.DELETE_RECIPE_SUCCESS,
@@ -73,6 +75,7 @@ export class RecipeEffect {
     ),
     tap(() => {
       this.router.navigate(['../'], { relativeTo: this.route });
+      // this.router.navigate(['/recipes']);
     })
   );
 }
