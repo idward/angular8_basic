@@ -82,9 +82,9 @@ export class RecipeEditComponent implements OnInit, AfterViewInit {
 
   onSubmit(): void {
     console.log(this.recipeForm);
+    this.isSaveMode = true;
     if (this.recipe) {
       // update
-      this.isSaveMode = true;
       this.store.dispatch(
         new RecipeActions.UpdateRecipe({
           id: this.recipe.id,

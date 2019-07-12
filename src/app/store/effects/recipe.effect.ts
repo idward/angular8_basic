@@ -75,7 +75,6 @@ export class RecipeEffect {
     ),
     tap(() => {
       this.router.navigate(['../'], { relativeTo: this.route });
-      // this.router.navigate(['/recipes']);
     })
   );
 }

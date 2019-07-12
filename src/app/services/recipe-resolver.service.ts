@@ -6,7 +6,7 @@ import {
 } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 import { AppState } from '../store';
 import { RecipeState } from '../store/reducers/recipe.reducer';
@@ -32,6 +32,9 @@ export class RecipeResolverService implements Resolve<Recipe> {
         return recipesStore.recipes.find(
           (recipe: Recipe) => recipe.id === route.params.id
         );
+      }),
+      tap(data => {
+        console.log(data);
       })
     );
   }
