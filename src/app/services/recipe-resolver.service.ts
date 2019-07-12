@@ -5,8 +5,8 @@ import {
   RouterStateSnapshot
 } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, tap, switchMap, delay } from 'rxjs/operators';
 
 import { AppState } from '../store';
 import { RecipeState } from '../store/reducers/recipe.reducer';
@@ -25,17 +25,24 @@ export class RecipeResolverService implements Resolve<Recipe> {
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<Recipe> {
+  ): Observable<any> {
     // return this.recipeService.getRecipe(route.params.id);
-    return this.store.select('recipes').pipe(
-      map((recipesStore: RecipeState) => {
-        return recipesStore.recipes.find(
-          (recipe: Recipe) => recipe.id === route.params.id
-        );
-      }),
-      tap(data => {
-        console.log(data);
-      })
+    // return this.store.select('recipes').pipe(
+    //   switchMap((recipesStore: RecipeState) => {
+    //     // const recipe = recipesStore.recipes.find(
+    //     //   (recipe: Recipe) => recipe.id === route.params.id
+    //     // );
+    //     // return of(recipe);
+    //   })
+    // );
+    return of(
+      this.store
+        .select('recipes')
+        .pipe(
+          map(recipeStore =>
+            recipeStore.recipes.find(recipe => recipe.id === route.params.id)
+          )
+        )
     );
   }
 }
