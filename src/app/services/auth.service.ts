@@ -34,7 +34,6 @@ export class AuthService {
       )
       .pipe(
         tap(responseData => {
-          console.log(responseData);
           this.handleAuthentication(
             responseData.email,
             responseData.localId,
@@ -135,7 +134,6 @@ export class AuthService {
   }
 
   autoLogout(expiredDuration: number): void {
-    console.log(expiredDuration);
     this.logoutTimerId = setTimeout(() => {
       this.logout();
     }, expiredDuration);

@@ -42,9 +42,11 @@ export class RecipeEditComponent implements OnInit, OnDestroy, AfterViewInit {
     // const recipeId = this.route.snapshot.params.id;
     // this.recipe = this.recipeService.getRecipe(recipeId);
     this.route.data.subscribe((value: Data) => {
-      this.recipeSubs = value.recipe.subscribe((recipe: Recipe) => {
-        this.recipe = recipe;
-      });
+      if (value.recipe) {
+        this.recipeSubs = value.recipe.subscribe((recipe: Recipe) => {
+          this.recipe = recipe;
+        });
+      }
 
       if (this.recipe) {
         this.recipeForm.patchValue({
@@ -52,7 +54,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy, AfterViewInit {
           imagePath: this.recipe.imagePath,
           description: this.recipe.description
         });
-        this.setIngredientsArray(this.recipe.ingredients);
+        this.setIngredientsArray(this.recipe.ingredients || []);
       } else {
         if (this.router.routerState.snapshot.url !== '/recipes/new') {
           const route = this.router.config.find(r => r.path === 'error');
