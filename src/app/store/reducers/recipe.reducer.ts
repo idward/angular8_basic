@@ -33,7 +33,7 @@ export function RecipeReducer(
         ...state,
         recipes: state.recipes.map((recipe: Recipe) => {
           if (recipe.id === action.payload.id) {
-            recipe = action.payload.recipe;
+            recipe = { ...recipe, ...action.payload.recipe };
           }
           return recipe;
         })

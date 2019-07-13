@@ -53,6 +53,7 @@ const errorHandler = (
 
 @Injectable()
 export class AuthEffect {
+  isRedirect: boolean = false;
   constructor(
     private action$: Actions,
     private http: HttpClient,
@@ -63,6 +64,7 @@ export class AuthEffect {
   authLogin = this.action$.pipe(
     ofType(AuthActions.LOGIN_START),
     switchMap((authData: AuthActions.LoginStart) => {
+      this.isRedirect = true;
       return this.http
         .post<AuthResponseData>(
           `https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=${
@@ -85,6 +87,7 @@ export class AuthEffect {
   authSignup = this.action$.pipe(
     ofType(AuthActions.SIGNUP_START),
     switchMap((authData: AuthActions.SignupStart) => {
+      this.isRedirect = true;
       return this.http
         .post<AuthResponseData>(
           `https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=${
@@ -112,7 +115,8 @@ export class AuthEffect {
         localStorage.setItem('userData', JSON.stringify(authData.payload));
       }
       const expiredDuration =
-        new Date(authData.payload.tokenExpiredDate).getTime() - new Date().getTime();
+        new Date(authData.payload.tokenExpiredDate).getTime() -
+        new Date().getTime();
       return of(new AuthActions.AuthenticateSuccess(expiredDuration));
     })
   );
@@ -134,7 +138,7 @@ export class AuthEffect {
       );
       // token过期
       if (!user.token) {
-        return of({ type: 'DUMMY' });
+        return of(new AuthActions.Logout());
       }
       return of(new AuthActions.Authenticate(user));
     })
@@ -155,6 +159,7 @@ export class AuthEffect {
   authLogout = this.action$.pipe(
     ofType(AuthActions.LOGOUT),
     tap(() => {
+      this.isRedirect = true;
       localStorage.removeItem('userData');
       localStorage.removeItem('token');
     })
@@ -164,7 +169,9 @@ export class AuthEffect {
   authRedirect = this.action$.pipe(
     ofType(AuthActions.AUTHENTICATE_SUCCESS, AuthActions.LOGOUT),
     tap(() => {
-      this.router.navigate(['/']);
+      if (this.isRedirect) {
+        this.router.navigate(['/']);
+      }
     })
   );
 }

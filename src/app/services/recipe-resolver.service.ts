@@ -36,13 +36,13 @@ export class RecipeResolverService implements Resolve<Recipe> {
     //   })
     // );
     return of(
-      this.store
-        .select('recipes')
-        .pipe(
-          map(recipeStore =>
-            recipeStore.recipes.find(recipe => recipe.id === route.params.id)
-          )
-        )
+      this.store.select('recipes').pipe(
+        map(recipeStore => {
+          return recipeStore.recipes.find(
+            recipe => recipe.id === route.params.id
+          );
+        })
+      )
     );
   }
 }

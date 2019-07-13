@@ -32,7 +32,7 @@ export function AuthReducer(
     case AuthActions.SIGNUP_START:
       return {
         ...state,
-        authError: null
+        authError: null,
       };
     case AuthActions.AUTHENTICATE_FAIL:
       return {

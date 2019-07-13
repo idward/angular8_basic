@@ -1,8 +1,8 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, Data } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { AppState } from 'src/app/store';
 import * as RecipeActions from '../../../store/actions/recipe.action';
@@ -17,9 +17,10 @@ import { RecipeService } from 'src/app/services/recipe.service';
   templateUrl: './recipe-edit.component.html',
   styleUrls: ['./recipe-edit.component.css']
 })
-export class RecipeEditComponent implements OnInit, AfterViewInit {
+export class RecipeEditComponent implements OnInit, OnDestroy, AfterViewInit {
   recipeForm: FormGroup;
   recipe: Recipe;
+  recipeSubs: Subscription;
   isChanged: boolean = false;
   isSaveMode: boolean = false;
 
@@ -41,7 +42,9 @@ export class RecipeEditComponent implements OnInit, AfterViewInit {
     // const recipeId = this.route.snapshot.params.id;
     // this.recipe = this.recipeService.getRecipe(recipeId);
     this.route.data.subscribe((value: Data) => {
-      this.recipe = value.recipe;
+      this.recipeSubs = value.recipe.subscribe((recipe: Recipe) => {
+        this.recipe = recipe;
+      });
 
       if (this.recipe) {
         this.recipeForm.patchValue({
@@ -142,5 +145,11 @@ export class RecipeEditComponent implements OnInit, AfterViewInit {
 
   trackByFn(index: number, item: Ingredient): string {
     return item.name + index;
+  }
+
+  ngOnDestroy(): void {
+    if (this.recipeSubs) {
+      this.recipeSubs.unsubscribe();
+    }
   }
 }
