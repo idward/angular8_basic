@@ -27,7 +27,7 @@ import { environment } from '../environments/environment';
 @NgModule({
   declarations: [AppComponent, ErrorPageComponent],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     HttpClientModule,
     HeaderModule,
     // AuthModule,
