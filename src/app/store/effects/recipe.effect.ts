@@ -2,11 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Store, Action } from '@ngrx/store';
+import { of } from 'rxjs';
+import { switchMap, map, tap, withLatestFrom } from 'rxjs/operators';
+
+import { AppState } from 'src/app/store';
+import { RecipeState } from 'src/app/store/reducers/recipe.reducer';
 import * as RecipeActions from '../actions/recipe.action';
-import { switchMap, map, tap } from 'rxjs/operators';
 
 import { Recipe } from 'src/app/models/recipe.model';
-import { of } from 'rxjs';
 
 @Injectable()
 export class RecipeEffect {
@@ -14,17 +18,25 @@ export class RecipeEffect {
     private action$: Actions,
     private http: HttpClient,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private store: Store<AppState>
   ) {}
 
   @Effect()
   setRecipes = this.action$.pipe(
     ofType(RecipeActions.SET_RECIPES),
-    switchMap((recipesData: RecipeActions.SetRecipes) => {
-      return this.http.put<Recipe[]>(
-        'https://angular-http-e4f15.firebaseio.com/recipes.json',
-        recipesData.payload
-      );
+    withLatestFrom(this.store.select('recipes')),
+    switchMap(([actionData, recipeStore]) => {
+      return this.http
+        .put<Recipe[]>(
+          'https://angular-http-e4f15.firebaseio.com/recipes.json',
+          recipeStore.recipes
+        )
+        .pipe(
+          map(() => {
+            return { type: 'DUMMUY' };
+          })
+        );
     })
   );
 

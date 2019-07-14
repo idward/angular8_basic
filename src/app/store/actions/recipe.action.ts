@@ -13,7 +13,6 @@ export const DELETE_RECIPE_SUCCESS = 'DELETE_RECIPE_SUCCESS';
 
 export class SetRecipes implements Action {
   readonly type = SET_RECIPES;
-  constructor(public payload: Recipe[]) {}
 }
 
 export class FetchRecipesStart implements Action {

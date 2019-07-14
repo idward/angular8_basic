@@ -13,11 +13,6 @@ export function RecipeReducer(
   action: RecipeActions.RecipeAction
 ) {
   switch (action.type) {
-    case RecipeActions.SET_RECIPES:
-      return {
-        ...state,
-        recipes: action.payload
-      };
     case RecipeActions.FETCH_RECIPES:
       return {
         ...state,
